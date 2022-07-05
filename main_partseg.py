@@ -68,8 +68,8 @@ def show_embedding_sklearn(tsne_embs_i_gpu, lbls_gpu,title = "", cmap=plt.cm.tab
             
 
             
-            tsne_embs_i = tsne_embs_i_gpu.cpu()
-            lbls = lbls_gpu.cpu()
+            tsne_embs_i = tsne_embs_i_gpu.cpu().detach().numpy()
+            lbls = lbls_gpu.cpu().detach().numpy()
             labels = lbls.flatten()
             print(labels.shape)
             print(tsne_embs_i.shape)
