@@ -17,7 +17,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.optim.lr_scheduler import CosineAnnealingLR, StepLR
 from data import ShapeNetPart
-from model import DGCNN_partseg
+from model import DGCNN_partseg_conrastive as DGCNN_partseg
 import numpy as np
 from torch.utils.data import DataLoader
 from util import cal_loss, IOStream
@@ -174,6 +174,7 @@ def train(args, io):
         scheduler = StepLR(opt, step_size=20, gamma=0.5)
 
     criterion = cal_loss
+    
 
     best_test_iou = 0
     for epoch in range(args.epochs):
@@ -202,7 +203,7 @@ def train(args, io):
             data = data.permute(0, 2, 1)
             batch_size = data.size()[0]
             opt.zero_grad()
-            seg_pred = model(data, label_one_hot)
+            seg_pred,last_hidden_layer = model(data, label_one_hot)
             seg_pred = seg_pred.permute(0, 2, 1).contiguous()
             loss = criterion(seg_pred.view(-1, seg_num_all), seg.view(-1,1).squeeze())
             loss.backward()
