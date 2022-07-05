@@ -209,7 +209,7 @@ def train(args, io):
             data = data.permute(0, 2, 1)
             batch_size = data.size()[0]
             opt.zero_grad()
-            seg_pred,last_hidden_layer = model(data, label_one_hot)
+            seg_pred = model(data, label_one_hot)
             seg_pred = seg_pred.permute(0, 2, 1).contiguous()
             # print(seg_pred.view(-1, seg_num_all))
             # print(seg.view(-1,1).squeeze())
