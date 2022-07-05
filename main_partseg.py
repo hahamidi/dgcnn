@@ -64,8 +64,12 @@ def _init_():
 
 
 
-def show_embedding_sklearn(tsne_embs_i, lbls,title = "", cmap=plt.cm.tab20,highlight_lbls = None):
+def show_embedding_sklearn(tsne_embs_i_gpu, lbls_gpu,title = "", cmap=plt.cm.tab20,highlight_lbls = None):
             
+
+            
+            tsne_embs_i = tsne_embs_i_gpu.cpu()
+            lbls = lbls_gpu.cpu()
             labels = lbls.flatten()
             print(labels.shape)
             print(tsne_embs_i.shape)
