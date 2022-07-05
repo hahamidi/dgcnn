@@ -30,7 +30,7 @@ from contrastive_loss import Contrast_loss_point_cloud
 import numpy as np
 from numpy import array
 from matplotlib import pyplot as plt
-from sklearn.manifold import TSNEsk
+from sklearn.manifold import TSNE as TSNEsk
 
 
 
