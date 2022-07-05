@@ -86,8 +86,9 @@ def show_embedding_sklearn(tsne_embs_i_gpu, lbls_gpu,title = "",imsize=8, cmap=p
             selected = selected[1:]
 
             tsne = TSNEsk(n_components=2, random_state=0)
+            print("1111111111")
             tsne_embs = tsne.fit(selected)
-
+            print("1111111111")
             fig,ax = plt.subplots(figsize=(imsize,imsize))
             print(tsne_embs)
 
