@@ -89,6 +89,7 @@ def show_embedding_sklearn(tsne_embs_i_gpu, lbls_gpu,title = "",imsize=8, cmap=p
             tsne_embs = tsne.fit(selected)
 
             fig,ax = plt.subplots(figsize=(imsize,imsize))
+            print(tsne_embs)
 
             # colors = cmap(np.array(labels_s))
             ax.scatter(tsne_embs[:,0], tsne_embs[:,1], c=labels_s, cmap=cmap, alpha=1 if highlight_lbls is None else 0.1)
