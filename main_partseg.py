@@ -90,7 +90,7 @@ def show_embedding_sklearn(tsne_embs_i_gpu, lbls_gpu,title = "", cmap=plt.cm.tab
 
             tsne = TSNE(n_components=2, random_state=0)
             X_2d = tsne.fit_transform(selected)
-            target_ids = range(len(49))
+            target_ids = range(49)
             plt.figure(figsize=(6, 5))
             colors = ['red', 'blue', 'navy', 'green', 'violet', 'brown', 'gold', 'lime', 'teal', 'olive',
             'red', 'blue', 'navy', 'green', 'violet', 'brown', 'gold', 'lime', 'teal', 'olive',
