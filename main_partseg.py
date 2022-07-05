@@ -24,6 +24,11 @@ from util import cal_loss, IOStream
 import sklearn.metrics as metrics
 from plyfile import PlyData, PlyElement
 from tqdm import tqdm
+from contrastive_loss import Contrast_loss_point_cloud
+
+
+
+
 global class_cnts
 class_indexs = np.zeros((16,), dtype=int)
 global visual_warning
@@ -174,6 +179,7 @@ def train(args, io):
         scheduler = StepLR(opt, step_size=20, gamma=0.5)
 
     criterion = cal_loss
+    contrast_loss = Contrast_loss_point_cloud()
     
 
     best_test_iou = 0
@@ -205,6 +211,9 @@ def train(args, io):
             opt.zero_grad()
             seg_pred,last_hidden_layer = model(data, label_one_hot)
             seg_pred = seg_pred.permute(0, 2, 1).contiguous()
+            print(seg_pred.view(-1, seg_num_all))
+            print(seg.view(-1,1).squeeze())
+            print(seg_pred.view(-1, seg_num_all).shape)
             loss = criterion(seg_pred.view(-1, seg_num_all), seg.view(-1,1).squeeze())
             loss.backward()
             opt.step()
