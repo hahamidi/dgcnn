@@ -71,8 +71,7 @@ def show_embedding_sklearn(tsne_embs_i_gpu, lbls_gpu,title = "", cmap=plt.cm.tab
             tsne_embs_i = tsne_embs_i_gpu.cpu().detach().numpy()
             lbls = lbls_gpu.cpu().detach().numpy()
             labels = lbls.flatten()
-            print(labels.shape)
-            print(tsne_embs_i.shape)
+
             feat = np.zeros((tsne_embs_i.shape[1],tsne_embs_i.shape[2])).T
 
             for b in tsne_embs_i:
@@ -82,7 +81,7 @@ def show_embedding_sklearn(tsne_embs_i_gpu, lbls_gpu,title = "", cmap=plt.cm.tab
             number_of_labels = np.amax(labels) + 1
             selected = np.zeros((tsne_embs_i.shape[1],1)).T
             labels_s = []
-            print(feat.shape)
+
 
             for i in range(number_of_labels):
                 selected= np.concatenate((selected,feat[labels == i][0:100]), axis=0)
@@ -100,6 +99,8 @@ def show_embedding_sklearn(tsne_embs_i_gpu, lbls_gpu,title = "", cmap=plt.cm.tab
                     plt.scatter(X_2d[labels_s == i, 0], X_2d[labels_s == i, 1], c=colors[i])
             plt.legend()
             plt.show()
+            plt.savefig(title+".png")
+            
 
 
 
@@ -281,7 +282,7 @@ def train(args, io):
             train_typical_loss += loss_typical.item() * batch_size
             if (count / 16)%5 == 0:
                 print(loss.item(),loss_contrast.item(),loss_typical.item())
-                show_embedding_sklearn(last_hidden_layer,seg)
+                show_embedding_sklearn(last_hidden_layer,seg,str(count))
             # batch_iter.set_description('train loss: %f' % (loss.item() * batch_size))
             seg_np = seg.cpu().numpy()                  # (batch_size, num_points)
             pred_np = pred.detach().cpu().numpy()       # (batch_size, num_points)
