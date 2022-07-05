@@ -64,7 +64,7 @@ def _init_():
 
 
 
-def show_embedding_sklearn(tsne_embs_i_gpu, lbls_gpu,title = "", cmap=plt.cm.tab20,highlight_lbls = None):
+def show_embedding_sklearn(tsne_embs_i_gpu, lbls_gpu,title = "",imsize=8, cmap=plt.cm.tab20,highlight_lbls = None):
             
 
             
