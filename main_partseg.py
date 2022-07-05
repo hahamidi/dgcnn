@@ -401,7 +401,7 @@ if __name__ == "__main__":
                         help='Model to use, [dgcnn]')
     parser.add_argument('--dataset', type=str, default='shapenetpart', metavar='N',
                         choices=['shapenetpart'])
-    parser.add_argument('--class_choice', type=str, default=None, metavar='N',
+    parser.add_argument('--class_choice', type=str, default="guitar", metavar='N',
                         choices=['airplane', 'bag', 'cap', 'car', 'chair',
                                  'earphone', 'guitar', 'knife', 'lamp', 'laptop', 
                                  'motor', 'mug', 'pistol', 'rocket', 'skateboard', 'table'])
