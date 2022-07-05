@@ -217,7 +217,7 @@ def train(args, io):
             # print(seg_pred.view(-1, seg_num_all))
             # print(seg.view(-1,1).squeeze())
             # print(seg_pred.view(-1, seg_num_all).shape)
-            loss_contrast = contrast_loss(last_hidden_layer,seg) * 0.5
+            loss_contrast = contrast_loss(last_hidden_layer,seg) * 0.2
             loss_typical = criterion(seg_pred.view(-1, seg_num_all), seg.view(-1,1).squeeze())
             loss = loss_contrast  + loss_typical
             loss.backward()
@@ -288,9 +288,9 @@ def train(args, io):
             data = data.permute(0, 2, 1)
             batch_size = data.size()[0]
             with torch.no_grad():
-                seg_pred = model(data, label_one_hot)
+                seg_pred , last_hidden_layer = model(data, label_one_hot)
             seg_pred = seg_pred.permute(0, 2, 1).contiguous()
-            loss_contrast = contrast_loss(last_hidden_layer,seg) * 0.5
+            loss_contrast = contrast_loss(last_hidden_layer,seg) * 0.2
             loss_typical = criterion(seg_pred.view(-1, seg_num_all), seg.view(-1,1).squeeze())
             loss = loss_contrast + loss_typical
 
