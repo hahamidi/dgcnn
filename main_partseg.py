@@ -32,7 +32,7 @@ from numpy import array
 from matplotlib import pyplot as plt
 from sklearn.manifold import TSNE
 
-from tsne import bh_sne
+
 
 
 
