@@ -215,8 +215,9 @@ def train(args, io):
             # print(seg.view(-1,1).squeeze())
             # print(seg_pred.view(-1, seg_num_all).shape)
             loss_contrast = contrast_loss(last_hidden_layer,seg)
-            print(loss_contrast)
-            loss = criterion(seg_pred.view(-1, seg_num_all), seg.view(-1,1).squeeze())
+            loss_typical = criterion(seg_pred.view(-1, seg_num_all), seg.view(-1,1).squeeze())
+            loss = loss_contrast + loss_typical
+            print(loss_contrast.item(),loss_typical.item())
             loss.backward()
             opt.step()
             pred = seg_pred.max(dim=2)[1]               # (batch_size, num_points)
