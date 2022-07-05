@@ -71,9 +71,8 @@ def show_embedding_sklearn(tsne_embs_i_gpu, lbls_gpu,title = "", cmap=plt.cm.tab
             tsne_embs_i = tsne_embs_i_gpu.cpu().detach().numpy()
             lbls = lbls_gpu.cpu().detach().numpy()
             labels = lbls.flatten()
-
             feat = np.zeros((tsne_embs_i.shape[1],tsne_embs_i.shape[2])).T
-
+            
             for b in tsne_embs_i:
                 feat= np.concatenate((feat, b.T), axis=0)
 
@@ -81,30 +80,21 @@ def show_embedding_sklearn(tsne_embs_i_gpu, lbls_gpu,title = "", cmap=plt.cm.tab
             number_of_labels = np.amax(labels) + 1
             selected = np.zeros((tsne_embs_i.shape[1],1)).T
             labels_s = []
-
-
             for i in range(number_of_labels):
                 selected= np.concatenate((selected,feat[labels == i][0:100]), axis=0)
                 labels_s= np.concatenate((labels_s,labels[labels == i][0:100]), axis=0)
             selected = selected[1:]
 
-            tsne = TSNE(n_components=2, random_state=0)
-            X_2d = tsne.fit_transform(selected)
-            target_ids = range(49)
-            plt.figure(figsize=(6, 5))
-            colors = ['red', 'blue', 'navy', 'green', 'violet', 'brown', 'gold', 'lime', 'teal', 'olive',
-            'red', 'blue', 'navy', 'green', 'violet', 'brown', 'gold', 'lime', 'teal', 'olive',
-            'red', 'blue', 'navy', 'green', 'violet', 'brown', 'gold', 'lime', 'teal', 'olive',
-            'red', 'blue', 'navy', 'green', 'violet', 'brown', 'gold', 'lime', 'teal', 'olive',
-            'red', 'blue', 'navy', 'green', 'violet', 'brown', 'gold', 'lime', 'teal', 'olive']
-                # c=np.random.rand(1,3)
-            for i in target_ids:
-                
-                
-                plt.scatter(X_2d[labels_s == i, 0], X_2d[labels_s == i, 1], c=colors[i])
-            plt.legend()
-            plt.show()
-            plt.savefig(title+".png")
+            tsne = TSNE(metric='cosine', n_jobs=-1)
+            tsne_embs = tsne.fit(selected)
+
+            fig,ax = plt.subplots(figsize=(imsize,imsize))
+
+            # colors = cmap(np.array(labels_s))
+            ax.scatter(tsne_embs[:,0], tsne_embs[:,1], c=labels_s, cmap=cmap, alpha=1 if highlight_lbls is None else 0.1)
+            fig.savefig(title+'.png') 
+
+
             
 
 
