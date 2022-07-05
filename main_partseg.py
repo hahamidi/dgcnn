@@ -148,9 +148,9 @@ def train(args, io):
         drop_last = False
     else:
         drop_last = True
-    train_loader = DataLoader(train_dataset, num_workers=8, batch_size=args.batch_size, shuffle=True, drop_last=drop_last)
+    train_loader = DataLoader(train_dataset, num_workers=2, batch_size=args.batch_size, shuffle=True, drop_last=drop_last)
     test_loader = DataLoader(ShapeNetPart(partition='test', num_points=args.num_points, class_choice=args.class_choice), 
-                            num_workers=8, batch_size=args.test_batch_size, shuffle=True, drop_last=False)
+                            num_workers=2, batch_size=args.test_batch_size, shuffle=True, drop_last=False)
     
     device = torch.device("cuda" if args.cuda else "cpu")
 
@@ -188,6 +188,8 @@ def train(args, io):
         # Train
         ####################
         train_loss = 0.0
+        train_contrast_loss = 0.0
+        train_typical_loss = 0.0
         count = 0.0
         model.train()
         train_true_cls = []
@@ -214,15 +216,16 @@ def train(args, io):
             # print(seg_pred.view(-1, seg_num_all))
             # print(seg.view(-1,1).squeeze())
             # print(seg_pred.view(-1, seg_num_all).shape)
-            loss_contrast = contrast_loss(last_hidden_layer,seg)
+            loss_contrast = contrast_loss(last_hidden_layer,seg) * 0.5
             loss_typical = criterion(seg_pred.view(-1, seg_num_all), seg.view(-1,1).squeeze())
-            loss = loss_contrast + loss_typical
-            print(loss_contrast.item(),loss_typical.item())
+            loss = loss_contrast  + loss_typical
             loss.backward()
             opt.step()
             pred = seg_pred.max(dim=2)[1]               # (batch_size, num_points)
             count += batch_size
             train_loss += loss.item() * batch_size
+            train_contrast_loss += loss_contrast.item() * batch_size
+            train_typical_loss += loss_typical.item() * batch_size
             # batch_iter.set_description('train loss: %f' % (loss.item() * batch_size))
             seg_np = seg.cpu().numpy()                  # (batch_size, num_points)
             pred_np = pred.detach().cpu().numpy()       # (batch_size, num_points)
@@ -252,12 +255,17 @@ def train(args, io):
                                                                                                   train_acc,
                                                                                                   avg_per_class_acc,
                                                                                                   np.mean(train_ious))
+        outer_loss = 'all_loss %d, contrast: %.6f, typical: %.6f,' % (train_loss*1.0/count , train_contrast_loss*1.0/count , train_typical_loss*1.0/count)
         io.cprint(outstr)
+        io.cprint(outer_loss)
 
         ####################
         # Test
         ####################
         test_loss = 0.0
+        test_contrast_loss = 0.0
+        test_typical_loss = 0.0
+
         count = 0.0
         model.eval()
         test_true_cls = []
@@ -279,10 +287,17 @@ def train(args, io):
             with torch.no_grad():
                 seg_pred = model(data, label_one_hot)
             seg_pred = seg_pred.permute(0, 2, 1).contiguous()
-            loss = criterion(seg_pred.view(-1, seg_num_all), seg.view(-1,1).squeeze())
+            loss_contrast = contrast_loss(last_hidden_layer,seg) * 0.5
+            loss_typical = criterion(seg_pred.view(-1, seg_num_all), seg.view(-1,1).squeeze())
+            loss = loss_contrast + loss_typical
+
+
+
             pred = seg_pred.max(dim=2)[1]
             count += batch_size
             test_loss += loss.item() * batch_size
+            test_contrast_loss += loss_contrast.item() * batch_size
+            test_typical_loss += loss_typical.item() * batch_size
             seg_np = seg.cpu().numpy()
             pred_np = pred.detach().cpu().numpy()
             test_true_cls.append(seg_np.reshape(-1))
@@ -303,6 +318,8 @@ def train(args, io):
                                                                                               test_acc,
                                                                                               avg_per_class_acc,
                                                                                               np.mean(test_ious))
+        outer_loss = 'all_loss %d, contrast: %.6f, typical: %.6f,' % (test_loss*1.0/count , test_contrast_loss*1.0/count , test_typical_loss*1.0/count)
+
         io.cprint(outstr)
         if np.mean(test_ious) >= best_test_iou:
             best_test_iou = np.mean(test_ious)
