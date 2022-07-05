@@ -227,7 +227,7 @@ def train(args, io):
             train_loss += loss.item() * batch_size
             train_contrast_loss += loss_contrast.item() * batch_size
             train_typical_loss += loss_typical.item() * batch_size
-            if (count / 16)% == 5:
+            if (count / 16)%5 == 0:
                 print(loss.item(),loss_contrast.item(),loss_typical.item())
             # batch_iter.set_description('train loss: %f' % (loss.item() * batch_size))
             seg_np = seg.cpu().numpy()                  # (batch_size, num_points)
