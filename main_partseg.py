@@ -23,7 +23,7 @@ from torch.utils.data import DataLoader
 from util import cal_loss, IOStream
 import sklearn.metrics as metrics
 from plyfile import PlyData, PlyElement
-
+from tqdm import tqdm
 global class_cnts
 class_indexs = np.zeros((16,), dtype=int)
 global visual_warning
@@ -188,7 +188,10 @@ def train(args, io):
         train_true_seg = []
         train_pred_seg = []
         train_label_seg = []
-        for data, label, seg in train_loader:
+        print(train_loader.__len__())
+        batch_iter = tqdm(enumerate(train_loader), 'Training', total=len(train_loader),
+                                position=0)
+        for _,(data, label, seg) in batch_iter:
             seg = seg - seg_start_index
             label_one_hot = np.zeros((label.shape[0], 16))
             for idx in range(label.shape[0]):
@@ -206,6 +209,7 @@ def train(args, io):
             pred = seg_pred.max(dim=2)[1]               # (batch_size, num_points)
             count += batch_size
             train_loss += loss.item() * batch_size
+            batch_iter.set_description('train loss: %f' % (loss.item() * batch_size))
             seg_np = seg.cpu().numpy()                  # (batch_size, num_points)
             pred_np = pred.detach().cpu().numpy()       # (batch_size, num_points)
             train_true_cls.append(seg_np.reshape(-1))       # (batch_size * num_points)
@@ -247,7 +251,9 @@ def train(args, io):
         test_true_seg = []
         test_pred_seg = []
         test_label_seg = []
-        for data, label, seg in test_loader:
+        batch_iter_test = tqdm(enumerate(test_loader), 'Testing', total=len(test_loader),
+                                position=0)
+        for _,(data, label, seg) in batch_iter_test:
             seg = seg - seg_start_index
             label_one_hot = np.zeros((label.shape[0], 16))
             for idx in range(label.shape[0]):
@@ -363,7 +369,7 @@ if __name__ == "__main__":
                         choices=['airplane', 'bag', 'cap', 'car', 'chair',
                                  'earphone', 'guitar', 'knife', 'lamp', 'laptop', 
                                  'motor', 'mug', 'pistol', 'rocket', 'skateboard', 'table'])
-    parser.add_argument('--batch_size', type=int, default=32, metavar='batch_size',
+    parser.add_argument('--batch_size', type=int, default=16, metavar='batch_size',
                         help='Size of batch)')
     parser.add_argument('--test_batch_size', type=int, default=16, metavar='batch_size',
                         help='Size of batch)')
