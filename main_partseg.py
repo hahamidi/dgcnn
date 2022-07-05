@@ -189,9 +189,10 @@ def train(args, io):
         train_pred_seg = []
         train_label_seg = []
         print(train_loader.__len__())
-        batch_iter = tqdm(enumerate(train_loader), 'Training', total=len(train_loader),
-                                position=0)
-        for _,(data, label, seg) in batch_iter:
+        # batch_iter = tqdm(enumerate(train_loader), 'Training', total=len(train_loader),
+        #                         position=0)
+        # for _,(data, label, seg) in batch_iter:
+        for data, label, seg in train_loader:
             seg = seg - seg_start_index
             label_one_hot = np.zeros((label.shape[0], 16))
             for idx in range(label.shape[0]):
@@ -209,7 +210,7 @@ def train(args, io):
             pred = seg_pred.max(dim=2)[1]               # (batch_size, num_points)
             count += batch_size
             train_loss += loss.item() * batch_size
-            batch_iter.set_description('train loss: %f' % (loss.item() * batch_size))
+            # batch_iter.set_description('train loss: %f' % (loss.item() * batch_size))
             seg_np = seg.cpu().numpy()                  # (batch_size, num_points)
             pred_np = pred.detach().cpu().numpy()       # (batch_size, num_points)
             train_true_cls.append(seg_np.reshape(-1))       # (batch_size * num_points)
@@ -251,9 +252,9 @@ def train(args, io):
         test_true_seg = []
         test_pred_seg = []
         test_label_seg = []
-        batch_iter_test = tqdm(enumerate(test_loader), 'Testing', total=len(test_loader),
-                                position=0)
-        for _,(data, label, seg) in batch_iter_test:
+        # batch_iter_test = tqdm(enumerate(test_loader), 'Testing', total=len(test_loader),
+        #                         position=0)
+        for data, label, seg in test_loader:
             seg = seg - seg_start_index
             label_one_hot = np.zeros((label.shape[0], 16))
             for idx in range(label.shape[0]):
