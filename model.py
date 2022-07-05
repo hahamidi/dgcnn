@@ -413,7 +413,6 @@ class DGCNN_partseg_conrastive(nn.Module):
         x = self.conv11(x_contrastive)                      # (batch_size, 256, num_points) -> (batch_size, seg_num_all, num_points)
         
 
-        print(x.shape,x_contrastive.shape)
         return x,x_contrastive
 
 
