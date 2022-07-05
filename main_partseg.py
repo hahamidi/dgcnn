@@ -92,10 +92,13 @@ def show_embedding_sklearn(tsne_embs_i_gpu, lbls_gpu,title = "", cmap=plt.cm.tab
             X_2d = tsne.fit_transform(selected)
             target_ids = range(len(labels_s))
             plt.figure(figsize=(6, 5))
-            colors = ['red', 'blue', 'navy', 'green', 'violet', 'brown', 'gold', 'lime', 'teal', 'olive']
+            colors = ['red', 'blue', 'navy', 'green', 'violet', 'brown', 'gold', 'lime', 'teal', 'olive',
+            'red', 'blue', 'navy', 'green', 'violet', 'brown', 'gold', 'lime', 'teal', 'olive',
+            'red', 'blue', 'navy', 'green', 'violet', 'brown', 'gold', 'lime', 'teal', 'olive',
+            'red', 'blue', 'navy', 'green', 'violet', 'brown', 'gold', 'lime', 'teal', 'olive',
+            'red', 'blue', 'navy', 'green', 'violet', 'brown', 'gold', 'lime', 'teal', 'olive']
                 # c=np.random.rand(1,3)
             for i in target_ids:
-                if i<10:
                     plt.scatter(X_2d[labels_s == i, 0], X_2d[labels_s == i, 1], c=colors[i])
             plt.legend()
             plt.show()
