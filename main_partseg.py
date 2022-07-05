@@ -27,6 +27,13 @@ from tqdm import tqdm
 from contrastive_loss import Contrast_loss_point_cloud
 
 
+import numpy as np
+from numpy import array
+from matplotlib import pyplot as plt
+from sklearn.manifold import TSNE
+
+from tsne import bh_sne
+
 
 
 global class_cnts
@@ -52,6 +59,47 @@ def _init_():
     os.system('cp model.py outputs' + '/' + args.exp_name + '/' + 'model.py.backup')
     os.system('cp util.py outputs' + '/' + args.exp_name + '/' + 'util.py.backup')
     os.system('cp data.py outputs' + '/' + args.exp_name + '/' + 'data.py.backup')
+
+
+
+
+
+def show_embedding_sklearn(tsne_embs_i, lbls,title = "", cmap=plt.cm.tab20,highlight_lbls = None):
+            
+            labels = lbls.flatten()
+            print(labels.shape)
+            print(tsne_embs_i.shape)
+            feat = np.zeros((tsne_embs_i.shape[1],tsne_embs_i.shape[2])).T
+
+            for b in tsne_embs_i:
+                feat= np.concatenate((feat, b.T), axis=0)
+
+            feat= feat[tsne_embs_i.shape[2]: , :]
+            number_of_labels = np.amax(labels) + 1
+            selected = np.zeros((tsne_embs_i.shape[1],1)).T
+            labels_s = []
+            print(feat.shape)
+
+            for i in range(number_of_labels):
+                selected= np.concatenate((selected,feat[labels == i][0:100]), axis=0)
+                labels_s= np.concatenate((labels_s,labels[labels == i][0:100]), axis=0)
+            selected = selected[1:]
+
+            tsne = TSNE(n_components=2, random_state=0)
+            X_2d = tsne.fit_transform(selected)
+            target_ids = range(len(labels_s))
+            plt.figure(figsize=(6, 5))
+            colors = ['red', 'blue', 'navy', 'green', 'violet', 'brown', 'gold', 'lime', 'teal', 'olive']
+                # c=np.random.rand(1,3)
+            for i in target_ids:
+                if i<10:
+                    plt.scatter(X_2d[labels_s == i, 0], X_2d[labels_s == i, 1], c=colors[i])
+            plt.legend()
+            plt.show()
+
+
+
+
 
 
 def calculate_shape_IoU(pred_np, seg_np, label, class_choice, visual=False):
@@ -229,6 +277,7 @@ def train(args, io):
             train_typical_loss += loss_typical.item() * batch_size
             if (count / 16)%5 == 0:
                 print(loss.item(),loss_contrast.item(),loss_typical.item())
+                show_embedding_sklearn(last_hidden_layer,seg)
             # batch_iter.set_description('train loss: %f' % (loss.item() * batch_size))
             seg_np = seg.cpu().numpy()                  # (batch_size, num_points)
             pred_np = pred.detach().cpu().numpy()       # (batch_size, num_points)
