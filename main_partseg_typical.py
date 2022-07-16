@@ -205,7 +205,7 @@ def train(args, io):
             for idx in range(label.shape[0]):
                 label_one_hot[idx, label[idx]] = 1
             label_one_hot = torch.from_numpy(label_one_hot.astype(np.float32))
-            data, label_one_hot, seg = data.to(device), label_one_hot.to(device), seg.to(device)
+            data, label_one_hot, seg = data.to(device,dtype=torch.float), label_one_hot.to(device,dtype=torch.float), seg.to(device,dtype=torch.float)
             data = data.permute(0, 2, 1)
             batch_size = data.size()[0]
             opt.zero_grad()
@@ -269,10 +269,11 @@ def train(args, io):
         for data, label, seg in test_loader:
             seg = seg - seg_start_index
             label_one_hot = np.zeros((label.shape[0], 16))
+
             for idx in range(label.shape[0]):
                 label_one_hot[idx, label[idx]] = 1
             label_one_hot = torch.from_numpy(label_one_hot.astype(np.float32))
-            data, label_one_hot, seg = data.to(device), label_one_hot.to(device), seg.to(device)
+            data, label_one_hot, seg = data.to(device,dtype=torch.float), label_one_hot.to(device,dtype=torch.float), seg.to(device,dtype=torch.float)
             data = data.permute(0, 2, 1)
             batch_size = data.size()[0]
             with torch.no_grad():
