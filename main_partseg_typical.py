@@ -200,12 +200,17 @@ def train(args, io):
         #                         position=0)
         # for _,(data, label, seg) in batch_iter:
         for data, label, seg in train_loader:
+            print(data[0][0].dtype)
+            print(label[0].dtype)
+            print(seg[0].dtype)
+            print(data.shape,label.shape, seg.shape)
             seg = seg - seg_start_index
             label_one_hot = np.zeros((label.shape[0], 16))
             for idx in range(label.shape[0]):
                 label_one_hot[idx, label[idx]] = 1
             label_one_hot = torch.from_numpy(label_one_hot.astype(np.float32))
-            data, label_one_hot, seg = data.to(device,dtype=torch.float), label_one_hot.to(device,dtype=torch.float), seg.to(device,dtype=torch.float)
+            data, label_one_hot, seg = data.to(device), label_one_hot.to(device), seg.to(device)
+            # print(data.dtype, label_one_hot.dtype, seg.dtype)
             data = data.permute(0, 2, 1)
             batch_size = data.size()[0]
             opt.zero_grad()
@@ -214,7 +219,8 @@ def train(args, io):
             # print(seg_pred.view(-1, seg_num_all))
             # print(seg.view(-1,1).squeeze())
             # print(seg_pred.view(-1, seg_num_all).shape)
-
+            # print(seg_pred)
+            # print(seg)
             loss_typical = criterion(seg_pred.view(-1, seg_num_all), seg.view(-1,1).squeeze())
             loss = loss_typical
             loss.backward()
@@ -385,9 +391,9 @@ if __name__ == "__main__":
                         choices=['airplane', 'bag', 'cap', 'car', 'chair',
                                  'earphone', 'guitar', 'knife', 'lamp', 'laptop', 
                                  'motor', 'mug', 'pistol', 'rocket', 'skateboard', 'table'])
-    parser.add_argument('--batch_size', type=int, default=16, metavar='batch_size',
+    parser.add_argument('--batch_size', type=int, default=2, metavar='batch_size',
                         help='Size of batch)')
-    parser.add_argument('--test_batch_size', type=int, default=32, metavar='batch_size',
+    parser.add_argument('--test_batch_size', type=int, default=2, metavar='batch_size',
                         help='Size of batch)')
     parser.add_argument('--epochs', type=int, default=200, metavar='N',
                         help='number of episode to train ')
