@@ -620,7 +620,7 @@ class ShapeNetPart(data.Dataset):
 
     def __getitem__(self, index):
 
-        points , labels = generate_point_cloud()
+        points , labels = generate_point_cloud(number_of_point_down_sample = self.number_of_points)
         points = np.round(points, 8)
       
 
