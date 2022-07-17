@@ -88,7 +88,7 @@ class Trainer():
                     #     identity - torch.bmm(feature_transform, feature_transform.transpose(2, 1))
                     # )
                     loss = F.nll_loss(preds, targets) + 0.001 # * regularization_loss
-                    # print(loss)
+                    print(loss)
                     epoch_train_loss.append(loss.cpu().item())
                     loss.backward()
                     self.optimizer.step()
