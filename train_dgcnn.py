@@ -128,7 +128,8 @@ class Trainer():
         self.model = self.model.eval()
         with tensorflow.device('/cpu:0'):
             m = MeanIoU(self.number_of_classes, name=None, dtype=None)
-            for points,labels,targets in self.val_data_loader:
+            for points in self.val_data_loader:
+                        print(points)
                         targets = targets - self.start_index
                         
 
