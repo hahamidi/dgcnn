@@ -25,7 +25,7 @@ from model import DGCNN_partseg
 dire = __file__.split('/')[:-1]
 dire = '/'.join(dire)
 
-print(dire)
+print("=======>",dire)
 class Trainer():
     def __init__(self,model,
                         train_data_loader, 
