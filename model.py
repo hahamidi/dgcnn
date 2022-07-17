@@ -217,6 +217,9 @@ class DGCNN_partseg(nn.Module):
         self.args = args
         self.seg_num_all = seg_num_all
         self.k = args.k
+        print(self.args,
+        self.seg_num_all,
+        self.k)
         self.transform_net = Transform_Net(args)
         
         self.bn1 = nn.BatchNorm2d(64)
@@ -320,7 +323,7 @@ class DGCNN_partseg_conrastive(nn.Module):
         self.args = args
         self.seg_num_all = seg_num_all
         self.k = args.k
-        print(self.k)
+
         self.transform_net = Transform_Net(args)
         
         self.bn1 = nn.BatchNorm2d(64)
