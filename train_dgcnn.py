@@ -221,7 +221,7 @@ class Trainer():
     def train(self):
             if self.load_model == True:
                 self.load_model_optimizer(self.load_epoch)
-                # self.new_head(25)
+                self.new_head(self.number_of_classes )
 
             for epoch in range(self.epochs):
                 
