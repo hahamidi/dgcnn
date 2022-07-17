@@ -2,6 +2,8 @@ import open3d as o3d
 import numpy as np
 import random
 import torch.utils.data as data
+import warnings
+warnings.filterwarnings("ignore")
 
 def convert_to_point_cloud(mesh,number_of_point_per_meter=50):
     mesh.compute_vertex_normals()
@@ -514,6 +516,10 @@ def concate_pc_to_base(base_pc,pc_list,base_number,shapes_side_numbers):
         
         noise = (np.random.rand(1,3) /10)[0]
         angles = np.arccos(p_normal_source)+noise
+        array_sum = np.sum(angles)
+        array_has_nan = np.isnan(array_sum)
+        if array_has_nan :
+           angles = np.random.rand(1,3)[0]
         
         RO = pc.get_rotation_matrix_from_xyz((angles[0],angles[1],angles[2]))
         pc = pc.rotate(RO, center=(0,0,0))
@@ -581,8 +587,12 @@ def generate_point_cloud(number_of_point_down_sample = 3000):
     pc , labels= concate_pc_to_base(base_shape,sides,base_number,shapes_side_numbers)
     points = np.array(pc.points)
 #     print(points.shape,labels.shape)
-    idx = np.random.choice(np.arange(len(points)), number_of_point_down_sample, replace=False)
-    points = points[idx]
+    try:
+      idx = np.random.choice(np.arange(len(points)), number_of_point_down_sample, replace=False)
+    except:
+      print("less point")
+      print(len(points))
+      idx = np.random.choice(np.arange(len(points)), number_of_point_down_sample, replace=True)    points = points[idx]
     labels = labels[idx]
    
 
