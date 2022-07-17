@@ -23,6 +23,7 @@ from pylab import cm
 from model import DGCNN_partseg
 from torch.optim.lr_scheduler import CosineAnnealingLR, StepLR
 from contrastive_loss import Contrast_loss_point_cloud,Contrast_loss_point_cloud_inetra_batch
+from data import ShapeNetPart
 # from pointNetP import PointNet2SemSegSSG
 dire = os.getcwd().split('/')
 dire = '/'.join(dire)
@@ -266,6 +267,10 @@ if __name__ == '__main__':
     parser.add_argument('--scheduler', type=str, default='cos', metavar='N',
                         choices=['cos', 'step'],
                         help='Scheduler to use, [cos, step]')
+    parser.add_argument('--class_choice', type=str, default="guitar", metavar='N',
+                        choices=['airplane', 'bag', 'cap', 'car', 'chair',
+                                 'earphone', 'guitar', 'knife', 'lamp', 'laptop', 
+                                 'motor', 'mug', 'pistol', 'rocket', 'skateboard', 'table'])
 
     args = parser.parse_args()
     print(args)
@@ -274,11 +279,13 @@ if __name__ == '__main__':
                 'shapenet': ShapeNetDataset,
             }
     train_dataset = ShapeNetDataset()
+    train_dataset = ShapeNetPart(partition='trainval', num_points=args.num_points, class_choice=args.class_choice)
     train_dataloader = torch.utils.data.DataLoader(train_dataset,
                                                         batch_size=args.batch_size,
                                                         shuffle=True,
                                                         num_workers=args.number_of_workers)
     test_dataset = ShapeNetDataset()
+    train_dataset = ShapeNetPart(partition='test', num_points=args.num_points, class_choice=args.class_choice)
     test_dataloader = torch.utils.data.DataLoader(test_dataset,
                                                         batch_size=args.batch_size,
                                                         shuffle=True,
@@ -288,7 +295,7 @@ if __name__ == '__main__':
     if args.task == 'segmentation':
             # model = SegmentationPointNet(num_classes=train_dataset.NUM_SEGMENTATION_CLASSES,
             #                          point_dimension=train_dataset.POINT_DIMENSION)
-            model = DGCNN_partseg(args ,train_dataset.NUM_SEGMENTATION_CLASSES)
+            model = DGCNN_partseg(args ,train_dataset.seg_num_all)
             print(model)
 
     optimizer = optim.Adam(model.parameters(), lr=args.learning_rate)
@@ -314,11 +321,11 @@ if __name__ == '__main__':
                         val_data_loader = test_dataloader, 
                         optimizer = opt,
                         epochs=args.epochs,
-                        number_of_classes = train_dataset.NUM_SEGMENTATION_CLASSES,
+                        number_of_classes = train_dataset.seg_num_all,
                         loss_function = CrossEntropyLoss(),
                         scheduler = scheduler,
                         device =device)
-    print(train_dataset.NUM_SEGMENTATION_CLASSES)
+    print(train_dataset.seg_num_all)
     trainer.train()
 
 
