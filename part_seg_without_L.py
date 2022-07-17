@@ -10,10 +10,8 @@ import numpy as np
 
 from fastprogress import master_bar, progress_bar
 
-from datasets import PointMNISTDataset
+
 from part import ShapeNetDataset
-from model.pointnet import ClassificationPointNet, SegmentationPointNet
-from utils import plot_losses, plot_accuracies
 from tqdm import tqdm
 import tensorflow
 from tensorflow.keras.metrics import MeanIoU
@@ -228,14 +226,10 @@ if __name__ == '__main__':
     parser.add_argument('--model_checkpoint', type=str, default='', help='model checkpoint path')
 
     args = parser.parse_args()
-    MODELS = {
-                'classification': ClassificationPointNet,
-                'segmentation': SegmentationPointNet
-            }
+
 
     DATASETS = {
                 'shapenet': ShapeNetDataset,
-                'mnist': PointMNISTDataset
             }
     train_dataset = DATASETS[args.dataset](args.dataset_folder,
                                       task=args.task,
@@ -253,10 +247,8 @@ if __name__ == '__main__':
                                                         shuffle=True,
                                                         num_workers=args.number_of_workers)
 
-    if args.task == 'classification':
-            model = ClassificationPointNet(num_classes=train_dataset.NUM_CLASSIFICATION_CLASSES,
-                                       point_dimension=train_dataset.POINT_DIMENSION)
-    elif args.task == 'segmentation':
+
+    if args.task == 'segmentation':
             # model = SegmentationPointNet(num_classes=train_dataset.NUM_SEGMENTATION_CLASSES,
             #                          point_dimension=train_dataset.POINT_DIMENSION)
             model = DGCNN_partseg(args, train_dataset.NUM_SEGMENTATION_CLASSES)
