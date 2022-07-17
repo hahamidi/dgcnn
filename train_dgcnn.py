@@ -69,7 +69,7 @@ class Trainer():
                 for points,labels,targets in self.train_data_loader:
                     batch_number += 1
                     # points, targets = data
-                    # print(points)
+                    print(points,labels,targets )
                     
 
                     points, targets = points.to(self.device), targets.to(self.device)
