@@ -179,7 +179,9 @@ class Trainer():
         self.optimizer.load_state_dict(torch.load( dire+'/checkpoints/optimizer_epoch_' + str(epoch_num) + '.pth'))
         print('Model and optimizer loaded!')
     def new_head(self,number_of_class):
-        self.model.conv11 = torch.nn.Conv1d(128, number_of_class, kernel_size=1, bias=False)
+        head =  torch.nn.Conv1d(128, number_of_class, kernel_size=1, bias=False)
+        head = head.to(torch.device('cuda' if torch.cuda.is_available() else 'cpu'))
+        self.model.conv11 = head
 
 
         print(self.model)
