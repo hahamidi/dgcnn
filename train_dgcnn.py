@@ -124,15 +124,16 @@ class Trainer():
         epoch_val_acc = []
         batch_number = 0
         shape_ious = []
-        batch_iter = tqdm(enumerate(self.val_data_loader), 'Validation', total=len(self.val_data_loader),position=0)
+        # batch_iter = tqdm(enumerate(self.val_data_loader), 'Validation', total=len(self.val_data_loader),position=0)
         self.model = self.model.eval()
         with tensorflow.device('/cpu:0'):
             m = MeanIoU(self.number_of_classes, name=None, dtype=None)
-            for idx,data in batch_iter:
+            for points,labels,targets in self.val_data_loader:
+                        targets = targets - self.start_index
                         
 
                         batch_number += 1
-                        points, targets = data
+                        # points, targets = data
                         # print(targets)
     
                         points, targets = points.to(self.device), targets.to(self.device)
@@ -164,8 +165,8 @@ class Trainer():
 
                         accuracy = corrects.item() / float(self.val_data_loader.batch_size*2500)
                         epoch_val_acc.append(accuracy)
-                        batch_iter.set_description(self.red('val loss: %f, val accuracy: %f,MIou %f' % (loss.cpu().item(),
-                                                                                accuracy,np.mean(part_ious))))
+                        # batch_iter.set_description(self.red('val loss: %f, val accuracy: %f,MIou %f' % (loss.cpu().item(),
+                                                                                # accuracy,np.mean(part_ious))))
         print("Loss",np.mean(epoch_val_loss))
         print("Accuracy",np.mean(epoch_val_acc))
         print("Mean IOU: ", np.mean(shape_ious))
