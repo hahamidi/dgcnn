@@ -69,9 +69,11 @@ class Trainer():
                     batch_number += 1
                     points, targets = data
                     # print(targets)
-
+                    
 
                     points, targets = points.to(self.device), targets.to(self.device)
+                    points =  torch.cat((points, points), dim=1)   
+                    print(points.shape)
                     # points = points.permute(0, 2, 1)
 
 
