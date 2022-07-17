@@ -272,6 +272,7 @@ class DGCNN_partseg(nn.Module):
         
 
     def forward(self, x):
+        print("---------",x.shape)
         batch_size = x.size(0)
         num_points = x.size(2)
 
