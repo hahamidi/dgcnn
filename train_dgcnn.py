@@ -71,7 +71,7 @@ class Trainer():
                     batch_number += 1
                     # points, targets = data
                     targets = targets - self.start_index
-                    print(points,labels,targets )
+                    # print(points,labels,targets )
                     
 
                     points, targets = points.to(self.device), targets.to(self.device)
