@@ -265,7 +265,7 @@ class DGCNN_partseg(nn.Module):
         self.conv11 = nn.Conv1d(128, self.seg_num_all, kernel_size=1, bias=False)
         
 
-    def forward(self, x, l):
+    def forward(self, x):
         batch_size = x.size(0)
         num_points = x.size(2)
 
