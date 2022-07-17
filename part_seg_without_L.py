@@ -224,7 +224,7 @@ if __name__ == '__main__':
     parser.add_argument('--number_of_points', type=int, default=2500, help='number of points per cloud')
     parser.add_argument('--batch_size', type=int, default=16, help='batch size')
     parser.add_argument('--epochs', type=int, default=2000, help='number of epochs')
-    parser.add_argument('--learning_rate', type=float, default=0.001, help='learning rate')
+    parser.add_argument('--learning_rate', type=float, default=0.01, help='learning rate')
     parser.add_argument('--number_of_workers', type=int, default=1, help='number of workers for the dataloader')
     # parser.add_argument('--model_checkpoint', type=str, default='', help='model checkpoint path')
     parser.add_argument('--model_checkpoint', type=str, default='', help='model checkpoint path')
