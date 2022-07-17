@@ -73,7 +73,7 @@ class Trainer():
 
                     points, targets = points.to(self.device), targets.to(self.device)
                     points =  torch.cat((points, points), dim=2)   
-                    print(points.shape)
+                    # print(points.shape)
                     # points = points.permute(0, 2, 1)
 
 
