@@ -250,7 +250,7 @@ if __name__ == '__main__':
                         help='Dimension of embeddings')
     parser.add_argument('--k', type=int, default=40, metavar='N',
                         help='Num of nearest neighbors to use')
-    parser.add_argument('--lr', type=float, default=0.01, metavar='LR',
+    parser.add_argument('--lr', type=float, default=0.001, metavar='LR',
                         help='learning rate (default: 0.001, 0.1 if using sgd)')
     parser.add_argument('--momentum', type=float, default=0.9, metavar='M',
                         help='SGD momentum (default: 0.9)')
