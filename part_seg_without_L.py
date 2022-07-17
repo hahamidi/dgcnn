@@ -22,7 +22,7 @@ import random
 from pylab import cm
 from model import DGCNN_partseg
 
-dire = __file__.split('/')[:-1]
+dire = os.getcwd().split('/')[:-1]
 dire = '/'.join(dire)
 
 print("=======>",dire)
