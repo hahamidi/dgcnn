@@ -622,6 +622,7 @@ class ShapeNetDataset(data.Dataset):
 
         points , labels = generate_point_cloud(number_of_point_down_sample = self.number_of_points)
         points = np.round(points, 8)
+        labels = labels -1
       
 
         return points.astype(np.float32),labels.astype(np.int64)
