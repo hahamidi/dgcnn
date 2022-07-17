@@ -578,7 +578,7 @@ def concate_pc_to_base(base_pc,pc_list,base_number,shapes_side_numbers):
        
 def generate_point_cloud(number_of_point_down_sample = 3000):        
     base_number = random.randint(1,22)
-    number_of_shaps = random.randint(1,7)
+    number_of_shaps = random.randint(1,3)
     shapes_side_numbers = []
     for _ in range(number_of_shaps):
         shapes_side_numbers.append(random.randint(1,22))
