@@ -54,7 +54,7 @@ class Trainer():
 
 
 
-        self.loss = CrossEntropyLoss()
+        # self.loss = CrossEntropyLoss()
     def train_one_epoch(self,epoch_num):
 
                 epoch_train_loss = []
@@ -87,7 +87,7 @@ class Trainer():
                     # regularization_loss = torch.norm(
                     #     identity - torch.bmm(feature_transform, feature_transform.transpose(2, 1))
                     # )
-                    loss = self.loss(preds, targets)  # * regularization_loss
+                    loss =  self.loss_function(preds, targets)  # * regularization_loss
                     print(loss.item())
                     epoch_train_loss.append(loss.cpu().item())
                     loss.backward()
