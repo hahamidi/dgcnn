@@ -91,8 +91,8 @@ class Trainer():
                     # regularization_loss = torch.norm(
                     #     identity - torch.bmm(feature_transform, feature_transform.transpose(2, 1))
                     # )
-                    print(preds,targets)
-                    print(preds.shape,targets.shape)
+                    # print(preds,targets)
+                    # print(preds.shape,targets.shape)
                     loss =  self.loss_function(preds, targets)  # * regularization_loss
                     print(loss.item())
                     epoch_train_loss.append(loss.cpu().item())
