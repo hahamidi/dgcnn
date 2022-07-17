@@ -300,7 +300,7 @@ if __name__ == '__main__':
                         optimizer = opt,
                         epochs=args.epochs,
                         number_of_classes = train_dataset.NUM_SEGMENTATION_CLASSES,
-                        loss_function = Contrast_loss_point_cloud(),
+                        loss_function = CrossEntropyLoss(),
                         scheduler = scheduler,
                         device =device)
     print(train_dataset.NUM_SEGMENTATION_CLASSES)
