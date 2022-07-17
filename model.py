@@ -28,8 +28,7 @@ def knn(x, k):
     inner = -2*torch.matmul(x.transpose(2, 1), x)
     xx = torch.sum(x**2, dim=1, keepdim=True)
     pairwise_distance = -xx - inner - xx.transpose(2, 1)
-    print("//////",k)
-    print(pairwise_distance)
+
     idx = pairwise_distance.topk(k=k, dim=-1)[1]   # (batch_size, num_points, k)
     return idx
 
@@ -215,14 +214,11 @@ class Transform_Net(nn.Module):
 class DGCNN_partseg(nn.Module):
     def __init__(self, args, seg_num_all):
         super(DGCNN_partseg, self).__init__()
-        print("**********")
+
         self.args = args
         self.seg_num_all = seg_num_all
         self.k = args.k
-        print("**********")
-        print(self.args,
-        self.seg_num_all,
-        self.k)
+
         self.transform_net = Transform_Net(args)
         
         self.bn1 = nn.BatchNorm2d(64)
@@ -272,11 +268,9 @@ class DGCNN_partseg(nn.Module):
         
 
     def forward(self, x):
-        print("---------",x.shape)
+
         batch_size = x.size(0)
         num_points = x.size(2)
-        print(batch_size,num_points)
-
         x0 = get_graph_feature(x, k=self.k)     # (batch_size, 3, num_points) -> (batch_size, 3*2, num_points, k)
         t = self.transform_net(x0)              # (batch_size, 3, 3)
         x = x.transpose(2, 1)                   # (batch_size, 3, num_points) -> (batch_size, num_points, 3)
