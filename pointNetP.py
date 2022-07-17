@@ -121,7 +121,7 @@ class model_with_head(torch.nn.Module):
             nn.BatchNorm1d(128),
             nn.ReLU(True),
             nn.Dropout(0.5),
-            nn.Conv1d(128, 13, kernel_size=1),
+            nn.Conv1d(128, 22, kernel_size=1),
         )
 
     def forward(self,pointcloud):
