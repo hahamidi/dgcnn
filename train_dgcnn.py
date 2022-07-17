@@ -48,6 +48,7 @@ class Trainer():
         self.loss_function = loss_function
         self.scheduler = scheduler
         self.device = device
+        self.start_index = 19
 
         self.load_model = True
         self.load_epoch = 1980
@@ -69,6 +70,7 @@ class Trainer():
                 for points,labels,targets in self.train_data_loader:
                     batch_number += 1
                     # points, targets = data
+                    targets = targets - self.start_index
                     print(points,labels,targets )
                     
 
