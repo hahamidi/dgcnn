@@ -285,6 +285,7 @@ if __name__ == '__main__':
             # model = SegmentationPointNet(num_classes=train_dataset.NUM_SEGMENTATION_CLASSES,
             #                          point_dimension=train_dataset.POINT_DIMENSION)
             model = DGCNN_partseg(args ,train_dataset.NUM_SEGMENTATION_CLASSES)
+            print(model)
 
     optimizer = optim.Adam(model.parameters(), lr=args.learning_rate)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
