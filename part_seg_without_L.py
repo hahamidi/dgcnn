@@ -67,7 +67,8 @@ class Trainer():
                     batch_number += 1
                     points, targets = data
                     # print(targets)
- 
+
+
                     points, targets = points.to(self.device), targets.to(self.device)
                     points = points.permute(0, 2, 1)
 
@@ -76,17 +77,17 @@ class Trainer():
                         continue
                     self.optimizer.zero_grad()
                     
-                    preds, feature_transform = self.model(points)
+                    preds = self.model(points)
                     # if idx == 0:
                     #     self.show_embedding_sklearn((preds).cpu().detach().numpy(),targets.cpu().detach().numpy(),title = "train"+str(epoch_num))
                     preds = preds.view(-1, self.number_of_classes)
                     targets = targets.view(-1)
 
-                    identity = torch.eye(feature_transform.shape[-1]).to(self.device)
-                    regularization_loss = torch.norm(
-                        identity - torch.bmm(feature_transform, feature_transform.transpose(2, 1))
-                    )
-                    loss = F.nll_loss(preds, targets) + 0.001 * regularization_loss
+                    # identity = torch.eye(feature_transform.shape[-1]).to(self.device)
+                    # regularization_loss = torch.norm(
+                    #     identity - torch.bmm(feature_transform, feature_transform.transpose(2, 1))
+                    # )
+                    loss = F.nll_loss(preds, targets) + 0.001 # * regularization_loss
                     # print(loss)
                     epoch_train_loss.append(loss.cpu().item())
                     loss.backward()
