@@ -48,8 +48,8 @@ class Trainer():
         self.scheduler = scheduler
         self.device = device
 
-        self.load_model = False
-        self.load_epoch = 0
+        self.load_model = True
+        self.load_epoch = 1980
 
         self.blue= lambda x: '\033[94m' + x + '\033[0m'
         self.red = lambda x: '\033[91m' + x + '\033[0m'
@@ -177,6 +177,10 @@ class Trainer():
         self.model.load_state_dict(torch.load( dire+'/checkpoints/model_epoch_' + str(epoch_num) + '.pth'))
         self.optimizer.load_state_dict(torch.load( dire+'/checkpoints/optimizer_epoch_' + str(epoch_num) + '.pth'))
         print('Model and optimizer loaded!')
+    def new_head(self,number_of_class):
+        self.model = torch.nn.Sequential(*(list(self.model.children())[:-1]) ,torch.nn.Conv1d(128, number_of_class, kernel_size=1, bias=False) )
+
+        print(self.model)
 
     def show_embedding_sklearn(self,tsne_embs_i, lbls,title = "", cmap=plt.cm.tab20,highlight_lbls = None):
             
@@ -212,6 +216,7 @@ class Trainer():
     def train(self):
             if self.load_model == True:
                 self.load_model_optimizer(self.load_epoch)
+                self.new_head(25)
 
             for epoch in range(self.epochs):
                 
@@ -259,7 +264,7 @@ if __name__ == '__main__':
                         help='Scheduler to use, [cos, step]')
 
     args = parser.parse_args()
-
+    print(args)
 
     DATASETS = {
                 'shapenet': ShapeNetDataset,
@@ -277,7 +282,6 @@ if __name__ == '__main__':
 
 
     if args.task == 'segmentation':
-            print("model loaded")
             # model = SegmentationPointNet(num_classes=train_dataset.NUM_SEGMENTATION_CLASSES,
             #                          point_dimension=train_dataset.POINT_DIMENSION)
             model = DGCNN_partseg(args ,train_dataset.NUM_SEGMENTATION_CLASSES)
