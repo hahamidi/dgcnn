@@ -72,9 +72,9 @@ class Trainer():
                     
 
                     points, targets = points.to(self.device), targets.to(self.device)
-                    points =  torch.cat((points, points), dim=2)   
-                    # print(points.shape)
-                    # points = points.permute(0, 2, 1)
+                    # points =  torch.cat((points, points), dim=2)   
+                    print(points.shape)
+                    points = points.permute(0, 2, 1)
 
 
                     if points.shape[0] <= 1:
@@ -231,7 +231,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     # parser.add_argument('dataset', type=str, choices=['shapenet', 'mnist'], help='dataset to train on')
     # parser.add_argument('dataset_folder', type=str, help='path to the dataset folder')
-    parser.add_argument('--task', type=str,default = 'segmentation1' , choices=['classification', 'segmentation'], help='type of task')
+    parser.add_argument('--task', type=str,default = 'segmentation' , choices=['classification', 'segmentation'], help='type of task')
     # parser.add_argument('output_folder', type=str, help='output folder')
     parser.add_argument('--number_of_points', type=int, default=2500, help='number of points per cloud')
     parser.add_argument('--batch_size', type=int, default=16, help='batch size')
