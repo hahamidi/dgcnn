@@ -5,7 +5,7 @@ from torch.autograd import Function
 from typing import *
 
 try:
-    import pointnet2_ops._ext as _ext
+    import pointnet2_ops_lib.pointnet2_ops._ext as _ext
 except ImportError:
     from torch.utils.cpp_extension import load
     import glob
