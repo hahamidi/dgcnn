@@ -21,7 +21,7 @@ class PointNet2SemSegSSG(nn.Module):
         self.SA_modules = nn.ModuleList()
         self.SA_modules.append(
             PointnetSAModule(
-                npoint=1024,
+                npoint=2048,
                 radius=0.1,
                 nsample=32,
                 mlp=[3, 64, 64, 64],
