@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 import random
 from pylab import cm
 from model import DGCNN_partseg
-
+from torch.optim.lr_scheduler import CosineAnnealingLR, StepLR
 dire = os.getcwd().split('/')
 dire = '/'.join(dire)
 
@@ -92,9 +92,17 @@ class Trainer():
                     epoch_train_loss.append(loss.cpu().item())
                     loss.backward()
                     self.optimizer.step()
+                    if args.scheduler == 'cos':
+                        self.scheduler.step()
+                    elif args.scheduler == 'step':
+                        if self.optimizer.param_groups[0]['lr'] > 1e-5:
+                             self.scheduler.step()
+                        if self.optimizer.param_groups[0]['lr'] < 1e-5:
+                            for param_group in self.optimizer.param_groups:
+                                param_group['lr'] = 1e-5
+
                     preds = preds.data.max(1)[1]
                     corrects = preds.eq(targets.data).cpu().sum()
-
                     accuracy = corrects.item() / float(self.train_data_loader.batch_size*2500)
                     epoch_train_acc.append(accuracy)
                     # batch_iter.set_description(self.blue('train loss: %f, train accuracy: %f' % (loss.cpu().item(),accuracy)))
@@ -224,7 +232,7 @@ if __name__ == '__main__':
     parser.add_argument('--number_of_points', type=int, default=2500, help='number of points per cloud')
     parser.add_argument('--batch_size', type=int, default=16, help='batch size')
     parser.add_argument('--epochs', type=int, default=2000, help='number of epochs')
-    parser.add_argument('--learning_rate', type=float, default=0.01, help='learning rate')
+    parser.add_argument('--learning_rate', type=float, default=0.001, help='learning rate')
     parser.add_argument('--number_of_workers', type=int, default=1, help='number of workers for the dataloader')
     # parser.add_argument('--model_checkpoint', type=str, default='', help='model checkpoint path')
     parser.add_argument('--model_checkpoint', type=str, default='', help='model checkpoint path')
@@ -236,6 +244,13 @@ if __name__ == '__main__':
                         help='Dimension of embeddings')
     parser.add_argument('--k', type=int, default=40, metavar='N',
                         help='Num of nearest neighbors to use')
+    parser.add_argument('--lr', type=float, default=0.001, metavar='LR',
+                        help='learning rate (default: 0.001, 0.1 if using sgd)')
+    parser.add_argument('--momentum', type=float, default=0.9, metavar='M',
+                        help='SGD momentum (default: 0.9)')
+    parser.add_argument('--scheduler', type=str, default='cos', metavar='N',
+                        choices=['cos', 'step'],
+                        help='Scheduler to use, [cos, step]')
 
     args = parser.parse_args()
 
@@ -265,14 +280,27 @@ if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model.to(device)
     print(device)
+
+
+
+
+           
+    opt = optim.Adam(model.parameters(), lr=args.lr, weight_decay=1e-4)
+
+    if args.scheduler == 'cos':
+        scheduler = CosineAnnealingLR(opt, args.epochs, eta_min=1e-3)
+
+
+    elif args.scheduler == 'step':
+        scheduler = StepLR(opt, step_size=20, gamma=0.5)
     trainer = Trainer(model = model,
                         train_data_loader = train_dataloader, 
                         val_data_loader = test_dataloader, 
-                        optimizer = optimizer,
+                        optimizer = opt,
                         epochs=args.epochs,
                         number_of_classes = train_dataset.NUM_SEGMENTATION_CLASSES,
                         loss_function = F.cross_entropy,
-                        scheduler = None,
+                        scheduler = scheduler,
                         device =device)
     print(train_dataset.NUM_SEGMENTATION_CLASSES)
     trainer.train()
