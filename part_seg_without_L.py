@@ -23,6 +23,7 @@ from pylab import cm
 from model import DGCNN_partseg
 from torch.optim.lr_scheduler import CosineAnnealingLR, StepLR
 from contrastive_loss import Contrast_loss_point_cloud,Contrast_loss_point_cloud_inetra_batch
+from pointNetP import PointNet2SemSegSSG
 dire = os.getcwd().split('/')
 dire = '/'.join(dire)
 
@@ -228,7 +229,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     # parser.add_argument('dataset', type=str, choices=['shapenet', 'mnist'], help='dataset to train on')
     # parser.add_argument('dataset_folder', type=str, help='path to the dataset folder')
-    parser.add_argument('--task', type=str,default = 'segmentation' , choices=['classification', 'segmentation'], help='type of task')
+    parser.add_argument('--task', type=str,default = 'segmentation1' , choices=['classification', 'segmentation'], help='type of task')
     # parser.add_argument('output_folder', type=str, help='output folder')
     parser.add_argument('--number_of_points', type=int, default=2500, help='number of points per cloud')
     parser.add_argument('--batch_size', type=int, default=16, help='batch size')
@@ -276,7 +277,7 @@ if __name__ == '__main__':
             #                          point_dimension=train_dataset.POINT_DIMENSION)
             model = DGCNN_partseg(args ,train_dataset.NUM_SEGMENTATION_CLASSES)
     else:
-                raise Exception('Unknown task !')
+            model = PointNet2SemSegSSG()
     optimizer = optim.Adam(model.parameters(), lr=args.learning_rate)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model.to(device)
