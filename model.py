@@ -214,9 +214,11 @@ class Transform_Net(nn.Module):
 class DGCNN_partseg(nn.Module):
     def __init__(self, args, seg_num_all):
         super(DGCNN_partseg, self).__init__()
+        print("**********")
         self.args = args
         self.seg_num_all = seg_num_all
         self.k = args.k
+        print("**********")
         print(self.args,
         self.seg_num_all,
         self.k)
