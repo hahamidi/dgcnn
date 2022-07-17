@@ -223,7 +223,7 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', type=int, default=2000, help='number of epochs')
     parser.add_argument('--learning_rate', type=float, default=0.001, help='learning rate')
     parser.add_argument('--number_of_workers', type=int, default=1, help='number of workers for the dataloader')
-    parser.add_argument('--model_checkpoint', type=str, default='', help='model checkpoint path')
+    # parser.add_argument('--model_checkpoint', type=str, default='', help='model checkpoint path')
     parser.add_argument('--model_checkpoint', type=str, default='', help='model checkpoint path')
     parser.add_argument('--num_points', type=int, default=2048,
                         help='num of points to use')
