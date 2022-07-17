@@ -84,8 +84,8 @@ class Trainer():
                     preds = self.model(points)
                     # if idx == 0:
                     #     self.show_embedding_sklearn((preds).cpu().detach().numpy(),targets.cpu().detach().numpy(),title = "train"+str(epoch_num))
-                    preds = preds.view(-1, self.number_of_classes)
-                    targets = targets.view(-1)
+                    # preds = preds.view(-1, self.number_of_classes)
+                    # targets = targets.view(-1)
 
                     # identity = torch.eye(feature_transform.shape[-1]).to(self.device)
                     # regularization_loss = torch.norm(
