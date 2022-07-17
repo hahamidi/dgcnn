@@ -24,7 +24,7 @@ class PointNet2SemSegSSG(nn.Module):
                 npoint=1024,
                 radius=0.1,
                 nsample=32,
-                mlp=[3, 32, 32, 64],
+                mlp=[3, 64, 64, 64],
                 use_xyz=self.hparams["model.use_xyz"],
             )
         )
@@ -33,7 +33,7 @@ class PointNet2SemSegSSG(nn.Module):
                 npoint=256,
                 radius=0.2,
                 nsample=32,
-                mlp=[64, 64, 64, 128],
+                mlp=[64, 128, 128, 128],
                 use_xyz=self.hparams["model.use_xyz"],
             )
         )
@@ -42,7 +42,7 @@ class PointNet2SemSegSSG(nn.Module):
                 npoint=64,
                 radius=0.4,
                 nsample=32,
-                mlp=[128, 128, 128, 256],
+                mlp=[128, 256, 256, 256],
                 use_xyz=self.hparams["model.use_xyz"],
             )
         )
@@ -51,7 +51,7 @@ class PointNet2SemSegSSG(nn.Module):
                 npoint=16,
                 radius=0.8,
                 nsample=32,
-                mlp=[256, 256, 256, 512],
+                mlp=[256, 512, 512, 512],
                 use_xyz=self.hparams["model.use_xyz"],
             )
         )
