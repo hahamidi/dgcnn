@@ -604,13 +604,13 @@ def generate_point_cloud(number_of_point_down_sample = 3000):
 
 # print('Time: ', stop - start)    
     
-class ShapeNetPart(data.Dataset):
+class ShapeNetDataset(data.Dataset):
     NUM_SEGMENTATION_CLASSES = 22
     POINT_DIMENSION = 3
 
 
 
-    def __init__(self,partition = 'trainval',number_of_data = 10000,num_points=2500,class_choice = []):
+    def __init__(self,partition = 'trainval',number_of_data = 10000,num_points=2048,class_choice = []):
 
         self.number_of_points = num_points
         self.number_of_data = number_of_data
