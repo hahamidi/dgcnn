@@ -624,7 +624,7 @@ class ShapeNetPart(data.Dataset):
         points = np.round(points, 8)
       
 
-        return points.astype(np.float32),np.array([random.randint(0,15)]).astype(np.int64),labels.astype(np.int64)
+        return points.astype(np.float32),labels.astype(np.int64)
 
 
 

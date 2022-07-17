@@ -251,7 +251,7 @@ class DGCNN_partseg(nn.Module):
         self.conv7 = nn.Sequential(nn.Conv1d(16, 64, kernel_size=1, bias=False),
                                    self.bn7,
                                    nn.LeakyReLU(negative_slope=0.2))
-        self.conv8 = nn.Sequential(nn.Conv1d(1280, 256, kernel_size=1, bias=False),
+        self.conv8 = nn.Sequential(nn.Conv1d(1216, 256, kernel_size=1, bias=False),
                                    self.bn8,
                                    nn.LeakyReLU(negative_slope=0.2))
         self.dp1 = nn.Dropout(p=args.dropout)
@@ -294,10 +294,10 @@ class DGCNN_partseg(nn.Module):
         x = self.conv6(x)                       # (batch_size, 64*3, num_points) -> (batch_size, emb_dims, num_points)
         x = x.max(dim=-1, keepdim=True)[0]      # (batch_size, emb_dims, num_points) -> (batch_size, emb_dims, 1)
 
-        l = l.view(batch_size, -1, 1)           # (batch_size, num_categoties, 1)
-        l = self.conv7(l)                       # (batch_size, num_categoties, 1) -> (batch_size, 64, 1)
+        # l = l.view(batch_size, -1, 1)           # (batch_size, num_categoties, 1)
+        # l = self.conv7(l)                       # (batch_size, num_categoties, 1) -> (batch_size, 64, 1)
 
-        x = torch.cat((x, l), dim=1)            # (batch_size, 1088, 1)
+        # x = torch.cat((x, l), dim=1)            # (batch_size, 1088, 1)
         x = x.repeat(1, 1, num_points)          # (batch_size, 1088, num_points)
 
         x = torch.cat((x, x1, x2, x3), dim=1)   # (batch_size, 1088+64*3, num_points)
@@ -354,7 +354,7 @@ class DGCNN_partseg_conrastive(nn.Module):
         self.conv7 = nn.Sequential(nn.Conv1d(16, 64, kernel_size=1, bias=False),
                                    self.bn7,
                                    nn.LeakyReLU(negative_slope=0.2))
-        self.conv8 = nn.Sequential(nn.Conv1d(1280, 256, kernel_size=1, bias=False),
+        self.conv8 = nn.Sequential(nn.Conv1d(1216, 256, kernel_size=1, bias=False),
                                    self.bn8,
                                    nn.LeakyReLU(negative_slope=0.2))
         self.dp1 = nn.Dropout(p=args.dropout)
@@ -397,10 +397,10 @@ class DGCNN_partseg_conrastive(nn.Module):
         x = self.conv6(x)                       # (batch_size, 64*3, num_points) -> (batch_size, emb_dims, num_points)
         x = x.max(dim=-1, keepdim=True)[0]      # (batch_size, emb_dims, num_points) -> (batch_size, emb_dims, 1)
 
-        l = l.view(batch_size, -1, 1)           # (batch_size, num_categoties, 1)
-        l = self.conv7(l)                       # (batch_size, num_categoties, 1) -> (batch_size, 64, 1)
+        # l = l.view(batch_size, -1, 1)           # (batch_size, num_categoties, 1)
+        # l = self.conv7(l)                       # (batch_size, num_categoties, 1) -> (batch_size, 64, 1)
 
-        x = torch.cat((x, l), dim=1)            # (batch_size, 1088, 1)
+        # x = torch.cat((x, l), dim=1)            # (batch_size, 1088, 1)
         x = x.repeat(1, 1, num_points)          # (batch_size, 1088, num_points)
 
         x = torch.cat((x, x1, x2, x3), dim=1)   # (batch_size, 1088+64*3, num_points)
