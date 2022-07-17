@@ -146,17 +146,17 @@ class Trainer():
                         if points.shape[0] <= 1:
                             continue
                         # self.optimizer.zero_grad()
-                        
-                        preds = self.model(points)
-    
-                        preds = preds.view(-1, self.number_of_classes)
-                        targets = targets.view(-1)
+                        with torch.no_grad():                        
+                                preds = self.model(points)
+            
+                                preds = preds.view(-1, self.number_of_classes)
+                                targets = targets.view(-1)
 
-                        # identity = torch.eye(feature_transform.shape[-1]).to(self.device)
-                        # regularization_loss = torch.norm(
-                        #     identity - torch.bmm(feature_transform, feature_transform.transpose(2, 1))
-                        # )
-                        loss =  self.loss_function(preds, targets)
+                                # identity = torch.eye(feature_transform.shape[-1]).to(self.device)
+                                # regularization_loss = torch.norm(
+                                #     identity - torch.bmm(feature_transform, feature_transform.transpose(2, 1))
+                                # )
+                                loss =  self.loss_function(preds, targets)
                         epoch_val_loss.append(loss.cpu().item())
                         preds = preds.data.max(1)[1]
                         pred_np = preds.cpu().data.numpy()
