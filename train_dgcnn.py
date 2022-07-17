@@ -182,7 +182,7 @@ class Trainer():
     def new_head(self,number_of_class):
         head =  torch.nn.Conv1d(128, number_of_class, kernel_size=1, bias=False)
         head = head.to(torch.device('cuda' if torch.cuda.is_available() else 'cpu'))
-        # self.model.conv11 = head
+        self.model.conv11 = head
 
 
         print(self.model)
@@ -295,7 +295,7 @@ if __name__ == '__main__':
     if args.task == 'segmentation':
             # model = SegmentationPointNet(num_classes=train_dataset.NUM_SEGMENTATION_CLASSES,
             #                          point_dimension=train_dataset.POINT_DIMENSION)
-            model = DGCNN_partseg(args ,train_dataset.seg_num_all)
+            model = DGCNN_partseg(args ,22)
             print(model)
 
     optimizer = optim.Adam(model.parameters(), lr=args.learning_rate)
