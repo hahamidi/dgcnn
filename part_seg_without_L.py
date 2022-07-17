@@ -94,7 +94,7 @@ class Trainer():
                     # print(preds,targets)
                     # print(preds.shape,targets.shape)
                     loss =  self.loss_function(preds, targets)  # * regularization_loss
-                    print(loss.item())
+                    # print(loss.item())
                     epoch_train_loss.append(loss.cpu().item())
                     loss.backward()
                     self.optimizer.step()
