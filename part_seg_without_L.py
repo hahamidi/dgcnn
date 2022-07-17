@@ -155,8 +155,8 @@ class Trainer():
 
 
     def save_model_optimizer(self,epoch_num):
-        torch.save(self.model.state_dict(), '/checkpoints/model_epoch_' + str(epoch_num) + '.pth')
-        torch.save(self.optimizer.state_dict(), '/checkpoints/optimizer_epoch_' + str(epoch_num) + '.pth')
+        torch.save(self.model.state_dict(), dire+'/checkpoints/model_epoch_' + str(epoch_num) + '.pth')
+        torch.save(self.optimizer.state_dict(),  dire+'/checkpoints/optimizer_epoch_' + str(epoch_num) + '.pth')
         print('Model and optimizer saved!')
 
     def load_model_optimizer(self,epoch_num):
