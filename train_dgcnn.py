@@ -128,8 +128,8 @@ class Trainer():
         self.model = self.model.eval()
         with tensorflow.device('/cpu:0'):
             m = MeanIoU(self.number_of_classes, name=None, dtype=None)
-            for points in self.val_data_loader:
-                        print(points)
+            for points,labels,targets in self.val_data_loader:
+                        # print(points)
                         targets = targets - self.start_index
                         
 
@@ -289,7 +289,7 @@ if __name__ == '__main__':
                                                         shuffle=True,
                                                         num_workers=args.number_of_workers)
     test_dataset = ShapeNetDataset()
-    train_dataset = ShapeNetPart(partition='test', num_points=args.num_points, class_choice=args.class_choice)
+    test_dataset = ShapeNetPart(partition='test', num_points=args.num_points, class_choice=args.class_choice)
     test_dataloader = torch.utils.data.DataLoader(test_dataset,
                                                         batch_size=args.batch_size,
                                                         shuffle=True,
