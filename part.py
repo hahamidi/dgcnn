@@ -592,7 +592,8 @@ def generate_point_cloud(number_of_point_down_sample = 3000):
     except:
       print("less point")
       print(len(points))
-      idx = np.random.choice(np.arange(len(points)), number_of_point_down_sample, replace=True)    points = points[idx]
+      idx = np.random.choice(np.arange(len(points)), number_of_point_down_sample, replace=True)  
+    points = points[idx]
     labels = labels[idx]
    
 
