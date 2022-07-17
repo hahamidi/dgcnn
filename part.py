@@ -610,7 +610,7 @@ class ShapeNetDataset(data.Dataset):
 
 
 
-    def __init__(self,partition = 'trainval',number_of_data = 10000,num_points=2048,class_choice = []):
+    def __init__(self,partition = 'trainval',number_of_data = 1000,num_points=2048,class_choice = []):
 
         self.number_of_points = num_points
         self.number_of_data = number_of_data

@@ -224,6 +224,15 @@ if __name__ == '__main__':
     parser.add_argument('--learning_rate', type=float, default=0.001, help='learning rate')
     parser.add_argument('--number_of_workers', type=int, default=1, help='number of workers for the dataloader')
     parser.add_argument('--model_checkpoint', type=str, default='', help='model checkpoint path')
+    parser.add_argument('--model_checkpoint', type=str, default='', help='model checkpoint path')
+    parser.add_argument('--num_points', type=int, default=2048,
+                        help='num of points to use')
+    parser.add_argument('--dropout', type=float, default=0.5,
+                        help='dropout rate')
+    parser.add_argument('--emb_dims', type=int, default=1024, metavar='N',
+                        help='Dimension of embeddings')
+    parser.add_argument('--k', type=int, default=40, metavar='N',
+                        help='Num of nearest neighbors to use')
 
     args = parser.parse_args()
 
@@ -246,7 +255,7 @@ if __name__ == '__main__':
     if args.task == 'segmentation':
             # model = SegmentationPointNet(num_classes=train_dataset.NUM_SEGMENTATION_CLASSES,
             #                          point_dimension=train_dataset.POINT_DIMENSION)
-            model = DGCNN_partseg(args, train_dataset.NUM_SEGMENTATION_CLASSES)
+            model = DGCNN_partseg(args,args ,train_dataset.NUM_SEGMENTATION_CLASSES)
     else:
                 raise Exception('Unknown task !')
     optimizer = optim.Adam(model.parameters(), lr=args.learning_rate)
