@@ -12,7 +12,7 @@ class PointNet2SemSegSSG(nn.Module):
 
     def __init__(self):
         super().__init__()
-        self.hparams = {"model.use_xyz" : False}
+        self.hparams = {"model.use_xyz" : True}
         self.flag = 1
             # self.metric_moiu = MeanIoU(num_classes=13)
         self._build_model()
