@@ -12,7 +12,7 @@ class PointNet2SemSegSSG(nn.Module):
 
     def __init__(self):
         super().__init__()
-        self.hparams = {"model.use_xyz" : True}
+        self.hparams = {"model.use_xyz" : False}
         self.flag = 1
             # self.metric_moiu = MeanIoU(num_classes=13)
         self._build_model()
@@ -24,7 +24,7 @@ class PointNet2SemSegSSG(nn.Module):
                 npoint=1024,
                 radius=0.1,
                 nsample=32,
-                mlp=[6, 32, 32, 64],
+                mlp=[3, 32, 32, 64],
                 use_xyz=self.hparams["model.use_xyz"],
             )
         )
@@ -57,7 +57,7 @@ class PointNet2SemSegSSG(nn.Module):
         )
 
         self.FP_modules = nn.ModuleList()
-        self.FP_modules.append(PointnetFPModule(mlp=[128 + 6, 128, 128, 128]))
+        self.FP_modules.append(PointnetFPModule(mlp=[128 + 3, 128, 128, 128]))
         self.FP_modules.append(PointnetFPModule(mlp=[256 + 64, 256, 128]))
         self.FP_modules.append(PointnetFPModule(mlp=[256 + 128, 256, 256]))
         self.FP_modules.append(PointnetFPModule(mlp=[512 + 256, 256, 256]))
