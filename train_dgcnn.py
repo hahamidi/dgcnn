@@ -182,7 +182,7 @@ class Trainer():
     def new_head(self,number_of_class):
         head =  torch.nn.Conv1d(128, number_of_class, kernel_size=1, bias=False)
         head = head.to(torch.device('cuda' if torch.cuda.is_available() else 'cpu'))
-        self.model.conv11 = head
+        # self.model.conv11 = head
 
 
         print(self.model)
