@@ -277,6 +277,7 @@ if __name__ == '__main__':
 
 
     if args.task == 'segmentation':
+            print("model loaded")
             # model = SegmentationPointNet(num_classes=train_dataset.NUM_SEGMENTATION_CLASSES,
             #                          point_dimension=train_dataset.POINT_DIMENSION)
             model = DGCNN_partseg(args ,train_dataset.NUM_SEGMENTATION_CLASSES)
@@ -292,7 +293,7 @@ if __name__ == '__main__':
 
            
     opt = optim.Adam(model.parameters(), lr=args.lr, weight_decay=1e-4)
-
+    print("opt loaded")
     if args.scheduler == 'cos':
         scheduler = CosineAnnealingLR(opt, args.epochs, eta_min=1e-3)
 
