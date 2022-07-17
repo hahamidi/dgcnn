@@ -178,7 +178,8 @@ class Trainer():
         self.optimizer.load_state_dict(torch.load( dire+'/checkpoints/optimizer_epoch_' + str(epoch_num) + '.pth'))
         print('Model and optimizer loaded!')
     def new_head(self,number_of_class):
-        self.model = torch.nn.Sequential(*(list(self.model.children())[:-1]) ,torch.nn.Conv1d(128, number_of_class, kernel_size=1, bias=False) )
+        self.model.conv11 = torch.nn.Conv1d(128, number_of_class, kernel_size=1, bias=False)
+
 
         print(self.model)
 
