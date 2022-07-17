@@ -578,7 +578,7 @@ def concate_pc_to_base(base_pc,pc_list,base_number,shapes_side_numbers):
        
 def generate_point_cloud(number_of_point_down_sample = 3000):        
     base_number = random.randint(1,22)
-    number_of_shaps = random.randint(1,3)
+    number_of_shaps = random.randint(1,4)
     shapes_side_numbers = []
     for _ in range(number_of_shaps):
         shapes_side_numbers.append(random.randint(1,22))
@@ -644,5 +644,31 @@ class ShapeNetDataset(data.Dataset):
         return self.number_of_data
 
 
-    
+class ShapeNetDataset2(data.Dataset):
+    NUM_SEGMENTATION_CLASSES = 22
+    POINT_DIMENSION = 3
+
+
+
+    def __init__(self,partition = 'trainval',number_of_data = 200,num_points=2048,class_choice = []):
+
+        self.number_of_points = num_points
+        self.number_of_data = number_of_data
+        self.seg_num_all = 22
+        self.seg_start_index = 0
+
+
+    def __getitem__(self, index):
+
+        points , labels = generate_point_cloud(number_of_point_down_sample = self.number_of_points)
+        points = np.round(points, 8)
+        labels = labels -1
+      
+
+        return points.astype(np.float32),labels.astype(np.int64)
+
+
+
+    def __len__(self):
+        return self.number_of_data    
      

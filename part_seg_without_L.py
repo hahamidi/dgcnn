@@ -22,6 +22,7 @@ import random
 from pylab import cm
 from model import DGCNN_partseg
 from torch.optim.lr_scheduler import CosineAnnealingLR, StepLR
+from contrastive_loss import Contrast_loss_point_cloud,Contrast_loss_point_cloud_inetra_batch
 dire = os.getcwd().split('/')
 dire = '/'.join(dire)
 
@@ -299,7 +300,7 @@ if __name__ == '__main__':
                         optimizer = opt,
                         epochs=args.epochs,
                         number_of_classes = train_dataset.NUM_SEGMENTATION_CLASSES,
-                        loss_function = F.cross_entropy,
+                        loss_function = Contrast_loss_point_cloud(),
                         scheduler = scheduler,
                         device =device)
     print(train_dataset.NUM_SEGMENTATION_CLASSES)
