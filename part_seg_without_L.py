@@ -5,7 +5,7 @@ import os
 import torch
 import torch.optim as optim
 import torch.nn.functional as F
-
+from torch.nn import CrossEntropyLoss
 import numpy as np
 
 from fastprogress import master_bar, progress_bar
@@ -54,7 +54,7 @@ class Trainer():
 
 
 
-
+        self.loss = CrossEntropyLoss()
     def train_one_epoch(self,epoch_num):
 
                 epoch_train_loss = []
@@ -87,7 +87,7 @@ class Trainer():
                     # regularization_loss = torch.norm(
                     #     identity - torch.bmm(feature_transform, feature_transform.transpose(2, 1))
                     # )
-                    loss = F.nll_loss(preds, targets) + 0.001 # * regularization_loss
+                    loss = self.loss(preds, targets)  # * regularization_loss
                     print(loss)
                     epoch_train_loss.append(loss.cpu().item())
                     loss.backward()
