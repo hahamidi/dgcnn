@@ -72,7 +72,7 @@ class Trainer():
 
 
                     points, targets = points.to(self.device), targets.to(self.device)
-                    points = points.permute(0, 2, 1)
+                    # points = points.permute(0, 2, 1)
 
 
                     if points.shape[0] <= 1:
