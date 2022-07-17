@@ -214,10 +214,10 @@ class Trainer():
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('dataset', type=str, choices=['shapenet', 'mnist'], help='dataset to train on')
-    parser.add_argument('dataset_folder', type=str, help='path to the dataset folder')
-    parser.add_argument('task', type=str, choices=['classification', 'segmentation'], help='type of task')
-    parser.add_argument('output_folder', type=str, help='output folder')
+    # parser.add_argument('dataset', type=str, choices=['shapenet', 'mnist'], help='dataset to train on')
+    # parser.add_argument('dataset_folder', type=str, help='path to the dataset folder')
+    parser.add_argument('--task', type=str,default = 'segmentation' , choices=['classification', 'segmentation'], help='type of task')
+    # parser.add_argument('output_folder', type=str, help='output folder')
     parser.add_argument('--number_of_points', type=int, default=2500, help='number of points per cloud')
     parser.add_argument('--batch_size', type=int, default=32, help='batch size')
     parser.add_argument('--epochs', type=int, default=2000, help='number of epochs')
@@ -231,17 +231,12 @@ if __name__ == '__main__':
     DATASETS = {
                 'shapenet': ShapeNetDataset,
             }
-    train_dataset = DATASETS[args.dataset](args.dataset_folder,
-                                      task=args.task,
-                                      number_of_points=args.number_of_points)
+    train_dataset = ShapeNetDataset()
     train_dataloader = torch.utils.data.DataLoader(train_dataset,
                                                         batch_size=args.batch_size,
                                                         shuffle=True,
                                                         num_workers=args.number_of_workers)
-    test_dataset = DATASETS[args.dataset](args.dataset_folder,
-                                            task=args.task,
-                                            train=False,
-                                            number_of_points=args.number_of_points)
+    test_dataset = ShapeNetDataset()
     test_dataloader = torch.utils.data.DataLoader(test_dataset,
                                                         batch_size=args.batch_size,
                                                         shuffle=True,
