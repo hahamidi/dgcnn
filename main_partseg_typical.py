@@ -200,10 +200,10 @@ def train(args, io):
         #                         position=0)
         # for _,(data, label, seg) in batch_iter:
         for data, label, seg in train_loader:
-            print(data[0][0].dtype)
-            print(label[0].dtype)
-            print(seg[0].dtype)
-            print(data.shape,label.shape, seg.shape)
+            # print(data[0][0].dtype)
+            # print(label[0].dtype)
+            # print(seg[0].dtype)
+            # print(data.shape,label.shape, seg.shape)
             seg = seg - seg_start_index
             label_one_hot = np.zeros((label.shape[0], 16))
             for idx in range(label.shape[0]):
@@ -223,6 +223,7 @@ def train(args, io):
             # print(seg)
             loss_typical = criterion(seg_pred.view(-1, seg_num_all), seg.view(-1,1).squeeze())
             loss = loss_typical
+            print(loss.item())
             loss.backward()
             opt.step()
             pred = seg_pred.max(dim=2)[1]               # (batch_size, num_points)
