@@ -275,6 +275,7 @@ class DGCNN_partseg(nn.Module):
         print("---------",x.shape)
         batch_size = x.size(0)
         num_points = x.size(2)
+        print(batch_size,num_points)
 
         x0 = get_graph_feature(x, k=self.k)     # (batch_size, 3, num_points) -> (batch_size, 3*2, num_points, k)
         t = self.transform_net(x0)              # (batch_size, 3, 3)
