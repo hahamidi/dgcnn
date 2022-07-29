@@ -97,7 +97,7 @@ class Trainer():
                     batch = batch.to(self.device)
                     preds = self.model(points,batch)
                     print(preds.shape)
-                    out_batch = torch.zeros(args.batch_size,self.num_classes,args.num_points )
+                    out_batch = torch.zeros(args.batch_size,self.number_of_classes,args.num_points )
                     out = preds.squeeze(0).T
                     for b in range(args.batch_size):
                         out_batch[b,:,:] = out[batch == b]
