@@ -79,7 +79,7 @@ class Trainer():
                     # print(points.shape)
                     points = points.permute(0, 2, 1)
 
-
+                    print("---***********************--",points.shape)
                     if points.shape[0] <= 1:
                         continue
                     self.optimizer.zero_grad()
@@ -141,7 +141,7 @@ class Trainer():
                         # points =  torch.cat((points, points), dim=2)   
                         # print(points.shape)
                         points = points.permute(0, 2, 1)
-                        print("---***********************--",points.shape)
+                        
 
 
                         if points.shape[0] <= 1:
