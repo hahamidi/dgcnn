@@ -101,7 +101,7 @@ class Trainer():
                     out = preds.squeeze(0).T
                     print(out.shape)
                     for b in range(args.batch_size):
-                        out_batch[b,:,:] = out[batch == b]
+                        out_batch[b,:,:] = out[batch == b].T
                     print(out.shape)
                     # if idx == 0:
                     #     self.show_embedding_sklearn((preds).cpu().detach().numpy(),targets.cpu().detach().numpy(),title = "train"+str(epoch_num))
