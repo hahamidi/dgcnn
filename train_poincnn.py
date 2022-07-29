@@ -78,6 +78,10 @@ class Trainer():
                     # points =  torch.cat((points, points), dim=2)   
                     # print(points.shape)
                     # points = points.permute(0, 2, 1)
+                    point_for_pointcnn = points[0]
+                    for b in range(1,points.shape[0]):
+                        point_for_pointcnn = torch.cat((point_for_pointcnn,points[b]),dim=0)
+                    points = point_for_pointcnn
 
                     print("---***********************--",points.shape)
                     if points.shape[0] <= 1:
