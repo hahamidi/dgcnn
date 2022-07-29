@@ -99,6 +99,7 @@ class Trainer():
                     print(preds.shape)
                     out_batch = torch.zeros(args.batch_size,self.number_of_classes,args.num_points )
                     out = preds.squeeze(0).T
+                    print(out.shape)
                     for b in range(args.batch_size):
                         out_batch[b,:,:] = out[batch == b]
                     print(out.shape)
