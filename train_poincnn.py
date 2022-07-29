@@ -175,7 +175,7 @@ class Trainer():
                         # self.optimizer.zero_grad()
                         with torch.no_grad():                        
                                 preds = self.model(points,batch)
-                                points,batch = self.after_pred(preds,batch)
+                                preds = self.after_pred(preds,batch)
                                 preds = preds.view(-1, self.number_of_classes)
                                 targets = targets.view(-1)
 
