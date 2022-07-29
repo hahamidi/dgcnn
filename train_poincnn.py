@@ -66,7 +66,7 @@ class Trainer():
                         point_for_pointcnn = torch.cat((point_for_pointcnn,points[b]),dim=0)
         points = point_for_pointcnn
         return points,batch
-    def after_pred(self,preds):
+    def after_pred(self,preds,batch):
         out_batch = torch.zeros(args.batch_size,self.number_of_classes,args.num_points )
         out = preds.squeeze(0).T
    
@@ -106,7 +106,7 @@ class Trainer():
                     self.optimizer.zero_grad()
                     batch = batch.to(self.device)
                     preds = self.model(points,batch)
-                    preds = self.after_pred(preds)
+                    preds = self.after_pred(preds,batch)
              
 
                     # if idx == 0:
