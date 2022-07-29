@@ -67,7 +67,7 @@ class Trainer():
         points = point_for_pointcnn
         return points,batch
     def after_pred(self,preds,batch):
-        print(preds)
+        preds = preds[0]
         out_batch = torch.zeros(args.batch_size,self.number_of_classes,args.num_points )
         out = preds.squeeze(0).T
    
