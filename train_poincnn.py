@@ -57,6 +57,24 @@ class Trainer():
         self.red = lambda x: '\033[91m' + x + '\033[0m'
 
 
+    def pre_pointcnn(self,points):
+        batch_zero = torch.zeros(points[0].shape[0],dtype=torch.int64)
+        batch = torch.zeros(points[0].shape[0],dtype=torch.int64)
+        point_for_pointcnn = points[0]
+        for b in range(1,points.shape[0]):
+                        batch = torch.cat((batch,batch_zero + b),dim=0)
+                        point_for_pointcnn = torch.cat((point_for_pointcnn,points[b]),dim=0)
+        points = point_for_pointcnn
+        return points,batch
+    def after_pred(self,preds):
+        out_batch = torch.zeros(args.batch_size,self.number_of_classes,args.num_points )
+        out = preds.squeeze(0).T
+   
+        for b in range(args.batch_size):
+            out_batch[b,:,:] = out[batch == b].T
+        preds = out_batch
+        preds = preds.to(self.device)
+        return preds
 
         # self.loss = CrossEntropyLoss()
     def train_one_epoch(self,epoch_num):
@@ -80,28 +98,17 @@ class Trainer():
                     # points = points.permute(0, 2, 1)
                     
                     # all batch item concate together
-                    batch_zero = torch.zeros(points[0].shape[0],dtype=torch.int64)
-                    batch = torch.zeros(points[0].shape[0],dtype=torch.int64)
-                    point_for_pointcnn = points[0]
-                    for b in range(1,points.shape[0]):
-                        batch = torch.cat((batch,batch_zero + b),dim=0)
-                        point_for_pointcnn = torch.cat((point_for_pointcnn,points[b]),dim=0)
-                    points = point_for_pointcnn
 
-           
+
+                    points,batch = self.pre_pointcnn(points)
                     if points.shape[0] <= 1:
                         continue
                     self.optimizer.zero_grad()
                     batch = batch.to(self.device)
                     preds = self.model(points,batch)
+                    preds = self.after_pred(preds)
              
-                    out_batch = torch.zeros(args.batch_size,self.number_of_classes,args.num_points )
-                    out = preds.squeeze(0).T
-   
-                    for b in range(args.batch_size):
-                        out_batch[b,:,:] = out[batch == b].T
-                    preds = out_batch
-                    preds = preds.to(self.device)
+
                     # if idx == 0:
                     #     self.show_embedding_sklearn((preds).cpu().detach().numpy(),targets.cpu().detach().numpy(),title = "train"+str(epoch_num))
                     # preds = preds.view(-1, self.number_of_classes)
