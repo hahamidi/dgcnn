@@ -88,18 +88,16 @@ class Trainer():
                         point_for_pointcnn = torch.cat((point_for_pointcnn,points[b]),dim=0)
                     points = point_for_pointcnn
 
-                    print("---***********************--",points.shape)
-                    print(batch.shape)
-                    print(batch)
+           
                     if points.shape[0] <= 1:
                         continue
                     self.optimizer.zero_grad()
                     batch = batch.to(self.device)
                     preds = self.model(points,batch)
-                    print(preds.shape)
+             
                     out_batch = torch.zeros(args.batch_size,self.number_of_classes,args.num_points )
                     out = preds.squeeze(0).T
-                    print(out.shape)
+   
                     for b in range(args.batch_size):
                         out_batch[b,:,:] = out[batch == b].T
                     preds = out_batch
@@ -116,6 +114,7 @@ class Trainer():
                     # print(preds,targets)
                     # print(preds.shape,targets.shape)
                     loss =  self.loss_function(preds, targets)  # * regularization_loss
+                    print(loss.item())
                     # print(loss.item())
                     epoch_train_loss.append(loss.cpu().item())
                     loss.backward()
