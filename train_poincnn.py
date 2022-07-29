@@ -50,7 +50,7 @@ class Trainer():
         self.device = device
         self.start_index = 19
 
-        self.load_model = True
+        self.load_model = False
         self.load_epoch = 1980
 
         self.blue= lambda x: '\033[94m' + x + '\033[0m'
@@ -141,6 +141,7 @@ class Trainer():
                         # points =  torch.cat((points, points), dim=2)   
                         # print(points.shape)
                         points = points.permute(0, 2, 1)
+                        print("-----",points.shape)
 
 
                         if points.shape[0] <= 1:
