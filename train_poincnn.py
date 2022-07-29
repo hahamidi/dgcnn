@@ -184,7 +184,7 @@ class Trainer():
                                 #     identity - torch.bmm(feature_transform, feature_transform.transpose(2, 1))
                                 # )
                                 loss =  self.loss_function(preds, targets)
-                                print(loss.item())
+                                print("---",loss.item())
                         epoch_val_loss.append(loss.cpu().item())
                         preds = preds.data.max(1)[1]
                         pred_np = preds.cpu().data.numpy()
