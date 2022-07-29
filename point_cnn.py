@@ -39,14 +39,14 @@ class Net(torch.nn.Module):
     def __init__(self, num_classes):
         super().__init__()
         
-        self.conv1 = XConv(0, 64, dim=3, kernel_size=8, hidden_channels=32)
-        self.conv2 = XConv(64, 96, dim=3, kernel_size=12, hidden_channels=64,dilation=2)
+        self.conv1 = XConv(0, 64, dim=3, kernel_size=16, hidden_channels=32)
+        self.conv2 = XConv(64, 96, dim=3, kernel_size=16, hidden_channels=64,dilation=2)
         self.conv3 = XConv(96, 192, dim=3, kernel_size=16, hidden_channels=128,dilation=2)
         self.conv4 = XConv(192, 384, dim=3, kernel_size=16,hidden_channels=256, dilation=2)
-        self.conv4_up = XConv(384 + 128 , 192 , dim=3, kernel_size=12,hidden_channels=320, dilation=2)
-        self.conv3_up = XConv(192 + 192 , 96 , dim=3, kernel_size=12,hidden_channels=256, dilation=2)
-        self.conv2_up = XConv(96 + 96 , 96 , dim=3, kernel_size=12,hidden_channels=125, dilation=2)
-        self.conv1_up = XConv(96 + 64 , 128 , dim=3, kernel_size=8,hidden_channels=120, dilation=2)
+        self.conv4_up = XConv(384 + 128 , 192 , dim=3, kernel_size=16,hidden_channels=320, dilation=2)
+        self.conv3_up = XConv(192 + 192 , 96 , dim=3, kernel_size=16,hidden_channels=256, dilation=2)
+        self.conv2_up = XConv(96 + 96 , 96 , dim=3, kernel_size=16,hidden_channels=125, dilation=2)
+        self.conv1_up = XConv(96 + 64 , 128 , dim=3, kernel_size=16,hidden_channels=120, dilation=2)
         
 
         self.lin1 = Lin(384, 256)
@@ -92,7 +92,7 @@ class Net(torch.nn.Module):
         # out = out.squeeze(0).T
         # for b in range(batch_size):
         #     out_batch[b,:,:] = out[batch == b]
-        return out.squeeze(0)
+        return out.squeeze(0),
 
         
 
