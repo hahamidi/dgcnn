@@ -141,7 +141,7 @@ class Trainer():
                         # points =  torch.cat((points, points), dim=2)   
                         # print(points.shape)
                         points = points.permute(0, 2, 1)
-                        print("-----",points.shape)
+                        print("---***********************--",points.shape)
 
 
                         if points.shape[0] <= 1:
@@ -303,14 +303,12 @@ if __name__ == '__main__':
     if args.task == 'segmentation':
             # model = SegmentationPointNet(num_classes=train_dataset.NUM_SEGMENTATION_CLASSES,
             #                          point_dimension=train_dataset.POINT_DIMENSION)
-            model = Net(22)
-            print(model)
+            model = Net(train_dataset.seg_num_all)
+            # print(model)
 
     optimizer = optim.Adam(model.parameters(), lr=args.learning_rate)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print(device)
     model.to(device)
-    print(device)
 
 
 
