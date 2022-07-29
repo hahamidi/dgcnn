@@ -103,6 +103,7 @@ class Trainer():
                     for b in range(args.batch_size):
                         out_batch[b,:,:] = out[batch == b].T
                     preds = out_batch
+                    preds = preds.to(self.device)
                     # if idx == 0:
                     #     self.show_embedding_sklearn((preds).cpu().detach().numpy(),targets.cpu().detach().numpy(),title = "train"+str(epoch_num))
                     # preds = preds.view(-1, self.number_of_classes)
