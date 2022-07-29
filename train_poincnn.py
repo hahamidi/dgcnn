@@ -259,7 +259,7 @@ class Trainer():
 
             for epoch in range(self.epochs):
                 
-                # self.train_one_epoch(epoch)
+                self.train_one_epoch(epoch)
                 self.val_one_epoch(epoch)
                 if epoch % 20 == 0:
                    self.save_model_optimizer(epoch)
