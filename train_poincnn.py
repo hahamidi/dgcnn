@@ -169,6 +169,7 @@ class Trainer():
                         
 
                         points,batch = self.pre_pointcnn(points)
+                        batch = batch.to(self.device)
                         if points.shape[0] <= 1:
                             continue
                         # self.optimizer.zero_grad()
