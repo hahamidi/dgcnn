@@ -97,6 +97,11 @@ class Trainer():
                     batch = batch.to(self.device)
                     preds = self.model(points,batch)
                     print(preds.shape)
+                    out_batch = torch.zeros(args.batch_size,self.num_classes,args.num_points )
+                    out = preds.squeeze(0).T
+                    for b in range(args.batch_size):
+                        out_batch[b,:,:] = out[batch == b]
+                    print(out.shape)
                     # if idx == 0:
                     #     self.show_embedding_sklearn((preds).cpu().detach().numpy(),targets.cpu().detach().numpy(),title = "train"+str(epoch_num))
                     # preds = preds.view(-1, self.number_of_classes)
