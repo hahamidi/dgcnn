@@ -81,7 +81,7 @@ class Trainer():
                     
                     # all batch item concate together
                     batch_zero = torch.zeros(points[0].shape[0])
-                    batch = torch.zeros(points[0].shape[0])
+                    batch = torch.zeros(points[0].shape[0],dtype=torch.int64)
                     point_for_pointcnn = points[0]
                     for b in range(1,points.shape[0]):
                         batch = torch.cat((batch,batch_zero + b),dim=0)
@@ -94,7 +94,7 @@ class Trainer():
                     if points.shape[0] <= 1:
                         continue
                     self.optimizer.zero_grad()
-                    batch = batch.to(self.device).int()
+                    batch = batch.to(self.device)
                     preds = self.model(points,batch)
                     print(preds)
                     # if idx == 0:
