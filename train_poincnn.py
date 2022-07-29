@@ -95,7 +95,8 @@ class Trainer():
                         continue
                     self.optimizer.zero_grad()
                     
-                    preds = self.model(points)
+                    preds = self.model(points,batch)
+                    print(preds)
                     # if idx == 0:
                     #     self.show_embedding_sklearn((preds).cpu().detach().numpy(),targets.cpu().detach().numpy(),title = "train"+str(epoch_num))
                     # preds = preds.view(-1, self.number_of_classes)
