@@ -106,23 +106,23 @@ class Net(torch.nn.Module):
 
 
 
-print("runnig")
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model = Net(num_classes=13).to(device)
-pos = torch.load('/content/ss/tensor_pos.pt')
-batch = torch.load('/content/ss/tensor_batch.pt')
-print(pos.size())
-print(batch.size())
-model(pos,batch)
-def get_n_params(model):
-    pp=0
-    for p in list(model.parameters()):
-        nn=1
-        # print(p)
-        for s in list(p.size()):
-            nn = nn*s
-        pp += nn
-    return pp
-print(get_n_params(model))
+# print("runnig")
+# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+# model = Net(num_classes=13).to(device)
+# pos = torch.load('/content/ss/tensor_pos.pt')
+# batch = torch.load('/content/ss/tensor_batch.pt')
+# print(pos.size())
+# print(batch.size())
+# model(pos,batch)
+# def get_n_params(model):
+#     pp=0
+#     for p in list(model.parameters()):
+#         nn=1
+#         # print(p)
+#         for s in list(p.size()):
+#             nn = nn*s
+#         pp += nn
+#     return pp
+# print(get_n_params(model))
 
-torch.save(model.state_dict(), '/content/ss/model_state_dict.pt')
+# torch.save(model.state_dict(), '/content/ss/model_state_dict.pt')

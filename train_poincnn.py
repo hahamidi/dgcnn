@@ -80,7 +80,7 @@ class Trainer():
                     # points = points.permute(0, 2, 1)
                     
                     # all batch item concate together
-                    batch_zero = torch.zeros(points[0].shape[0])
+                    batch_zero = torch.zeros(points[0].shape[0],dtype=torch.int64)
                     batch = torch.zeros(points[0].shape[0],dtype=torch.int64)
                     point_for_pointcnn = points[0]
                     for b in range(1,points.shape[0]):
