@@ -94,7 +94,7 @@ class Trainer():
                     if points.shape[0] <= 1:
                         continue
                     self.optimizer.zero_grad()
-                    batch = batch.to(self.device)
+                    batch = batch.to(self.device).int()
                     preds = self.model(points,batch)
                     print(preds)
                     # if idx == 0:
