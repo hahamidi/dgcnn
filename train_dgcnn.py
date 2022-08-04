@@ -291,14 +291,14 @@ if __name__ == '__main__':
                 'shapenet': ShapeNetDataset,
             }
     # train_dataset = ShapeNetDataset()
-    # train_dataset = ShapeNetPart(partition='trainval', num_points=args.num_points, class_choice=args.class_choice)
-    train_dataset  = S3DIS(num_points= args.num_points)
+    train_dataset = ShapeNetPart(partition='trainval', num_points=args.num_points, class_choice=args.class_choice)
+    # train_dataset  = S3DIS(num_points= args.num_points)
     train_dataloader = torch.utils.data.DataLoader(train_dataset,
                                                         batch_size=args.batch_size,
                                                         shuffle=True,
                                                         num_workers=args.number_of_workers)
     # test_dataset = ShapeNetDataset()
-    # test_dataset = ShapeNetPart(partition='test', num_points=args.num_points, class_choice=args.class_choice)
+    test_dataset = ShapeNetPart(partition='test', num_points=args.num_points, class_choice=args.class_choice)
     test_dataloader = torch.utils.data.DataLoader(test_dataset,
                                                         batch_size=args.batch_size,
                                                         shuffle=True,
