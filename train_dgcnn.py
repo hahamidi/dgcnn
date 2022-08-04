@@ -61,7 +61,8 @@ class Trainer():
     def get_n_params(self):
         pp=0
         for p in list(self.model.parameters()):
-            print(p)
+            
+            print("****************",p)
             break
    
 
