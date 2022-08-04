@@ -60,10 +60,10 @@ class POINTCNN_SEG(torch.nn.Module):
         self.down_sampler = down_sample_layer
 
 
-        self.fc_lyaer1 = nn.Conv1d(256, 128, kernel_size=1),
-        self.BN = nn.BatchNorm1d(128),
-        self.Drop = nn.Dropout(0.5),
-        self.fc_lyaer2 = nn.Conv1d(128, self.num_classes, kernel_size=1),
+        self.fc_lyaer1 = nn.Conv1d(256, 128, kernel_size=1)
+        self.BN = nn.BatchNorm1d(128)
+        self.Drop = nn.Dropout(0.5)
+        self.fc_lyaer2 = nn.Conv1d(128, self.num_classes, kernel_size=1)
 
         
     def forward(self, pos0, batch0):
@@ -114,7 +114,7 @@ class POINTCNN_SEG(torch.nn.Module):
         xo1_concat = (xo1 + x1).T
         print("XO1_CONCAT:",xo1_concat.shape)
         xo1_after_mlp = self.mlp_out1(xo1_concat)
-        print("XO1_CONCAT:",xo1_after_mlp.shape)
+        print("XO1_mlp:",xo1_after_mlp.shape)
 
         X_OUT = self.fc_lyaer1(xo1_after_mlp)
         print("X_OUT:",X_OUT.shape)
