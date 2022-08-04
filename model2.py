@@ -111,9 +111,11 @@ class POINTCNN_SEG(torch.nn.Module):
         Xo1_in = knn_interpolate(x = xo2_after_mlp, pos_x=pos2 , batch_x=batch2 , k=3 ,pos_y=pos1,batch_y=batch1)
         print("Xo1_in:",Xo1_in.shape)
         xo1 = F.relu(self.conv_up1(Xo1_in, pos1, batch1))
-
-        xo1_concat = (xo1 + x1)
+        print("XO1:",xo1.shape)
+        xo1_concat = (xo1 + x1).T
+        print("XO1_CONCAT:",xo1_concat.shape)
         xo1_after_mlp = self.mlp_out1(xo1_concat)
+        print("XO1_CONCAT:",xo1_concat.shape)
 
         X_OUT = self.fc_lyaer(xo1_after_mlp)
 
