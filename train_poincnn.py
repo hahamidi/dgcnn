@@ -282,7 +282,7 @@ if __name__ == '__main__':
     parser.add_argument('--task', type=str,default = 'segmentation' , choices=['classification', 'segmentation'], help='type of task')
     # parser.add_argument('output_folder', type=str, help='output folder')
     parser.add_argument('--number_of_points', type=int, default=2500, help='number of points per cloud')
-    parser.add_argument('--batch_size', type=int, default=16, help='batch size')
+    parser.add_argument('--batch_size', type=int, default=8, help='batch size')
     parser.add_argument('--epochs', type=int, default=2000, help='number of epochs')
     parser.add_argument('--learning_rate', type=float, default=0.001, help='learning rate')
     parser.add_argument('--number_of_workers', type=int, default=1, help='number of workers for the dataloader')
