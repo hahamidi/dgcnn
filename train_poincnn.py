@@ -108,6 +108,7 @@ class Trainer():
                     batch = batch.to(self.device)
                     preds = self.model(points,batch)
                     preds = self.after_pred(preds,batch)
+                    print(preds)
              
 
                     # if idx == 0:
