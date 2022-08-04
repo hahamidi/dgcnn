@@ -76,9 +76,9 @@ class POINTCNN_SEG(torch.nn.Module):
         print(preds.shape)
         # preds = preds[0]
         out_batch = torch.zeros(self.batch_size,self.num_classes,self.number_of_point )
-        out = preds.squeeze(0).T
+        out = preds.T
    
-        for b in range(args.batch_size):
+        for b in range(self.batch_size):
             out_batch[b,:,:] = out[batch == b].T
         preds = out_batch
         preds = preds.to(self.device)
