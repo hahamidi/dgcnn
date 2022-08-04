@@ -116,6 +116,7 @@ class Trainer():
                     preds = self.model(points,batch)
                     # print(preds[0:1000])
                     # print(preds.shape)
+                    print(preds)
                     preds = self.after_pred(preds,batch)
                     # print(preds)
                     # print(preds.shape)
