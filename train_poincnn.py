@@ -133,6 +133,7 @@ class Trainer():
                     # )
                     # print(preds,targets)
                     # print(preds.shape,targets.shape)
+                    print(preds)
                     loss =  self.loss_function(preds, targets)  # * regularization_loss
                     print(loss.item())
                     print(targets)
