@@ -68,14 +68,15 @@ class POINTCNN_SEG(torch.nn.Module):
             )
         
     def forward(self, pos, batch):
-
-        x1 = F.relu(self.conv1(None, pos, batch))
+        print(pos.shape)
         pos1,batch1 = pos, batch
+        x1 = F.relu(self.conv1(None, pos1, batch1))
+        
 
         x2, pos2, batch2 = self.down_sampler(x1, pos1, batch1)
         x2 = F.relu(self.conv2(x2, pos1, batch1))
 
-
+        print(x2.shape)
         x3, pos3, batch3 = self.down_sampler(x2, pos2, batch2)
         x3 = F.relu(self.conv3(x3, pos3, batch3))
 
