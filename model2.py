@@ -60,7 +60,7 @@ class POINTCNN_SEG(torch.nn.Module):
         self.down_sampler = down_sample_layer
 
         self.fc_lyaer = nn.Sequential(
-            nn.Conv1d(256, 128, kernel_size=1, bias=False),
+            nn.Conv1d(256, 128, kernel_size=1),
             nn.BatchNorm1d(128),
             nn.ReLU(True),
             nn.Dropout(0.5),
@@ -114,7 +114,7 @@ class POINTCNN_SEG(torch.nn.Module):
         print("XO1:",xo1.shape)
         xo1_concat = (xo1 + x1).T
         print("XO1_CONCAT:",xo1_concat.shape)
-        xo1_after_mlp = self.mlp_out1(xo1_concat).T
+        xo1_after_mlp = self.mlp_out1(xo1_concat)
         print("XO1_CONCAT:",xo1_after_mlp.shape)
 
         X_OUT = self.fc_lyaer(xo1_after_mlp)
