@@ -90,14 +90,14 @@ class POINTCNN_SEG(torch.nn.Module):
 
         xo4_concat = (xo4 + x4).T
         print("XO4_CONCAT:",xo4_concat.shape)
-        xo4_after_mlp = self.mlp_out4(xo4_concat)
+        xo4_after_mlp = self.mlp_out4(xo4_concat).T
         print("XO4_CONCAT:",xo4_concat.shape)
         Xo3_in = knn_interpolate(x = xo4_after_mlp, pos_x=pos4 , batch_x=batch4 , k=3 ,pos_y=pos3,batch_y=batch3)
         print("Xo3_in:",Xo3_in.shape)
         xo3 = F.relu(self.conv_up3(Xo3_in, pos3, batch3))
         print("XO3:",xo3.shape)
         xo3_concat = (xo3 + x3).T
-        xo3_after_mlp = self.mlp_out3(xo3_concat)
+        xo3_after_mlp = self.mlp_out3(xo3_concat).T
         Xo2_in = knn_interpolate(x = xo3_after_mlp, pos_x=pos3 , batch_x=batch3 , k=3 ,pos_y=pos2,batch_y=batch2)
         print("Xo2_in:",Xo2_in.shape)
 
@@ -105,7 +105,7 @@ class POINTCNN_SEG(torch.nn.Module):
         print("XO2:",xo2.shape)
 
         xo2_concat = (xo2 + x2).T
-        xo2_after_mlp = self.mlp_out2(xo2_concat)
+        xo2_after_mlp = self.mlp_out2(xo2_concat).T
         Xo1_in = knn_interpolate(x = xo2_after_mlp, pos_x=pos2 , batch_x=batch2 , k=3 ,pos_y=pos1,batch_y=batch1)
 
         xo1 = F.relu(self.conv_up1(Xo1_in, pos1, batch1))
