@@ -78,6 +78,13 @@ class Trainer():
         return preds
 
         # self.loss = CrossEntropyLoss()
+    def get_n_params(self):
+        pp=0
+        for p in list(self.model.parameters()):
+            
+            print("****************",p)
+            break
+   
     def train_one_epoch(self,epoch_num):
 
                 epoch_train_loss = []
@@ -112,6 +119,7 @@ class Trainer():
                     preds = self.after_pred(preds,batch)
                     print(preds)
                     print(preds.shape)
+                    self.get_n_params()
              
 
                     # if idx == 0:
