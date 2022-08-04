@@ -66,8 +66,36 @@ class POINTCNN_SEG(torch.nn.Module):
         self.DROP = nn.Dropout(0.5)
         self.fc_lyaer2 =nn.Conv1d(128, self.num_classes, kernel_size=1)
 
+
+        self.batch_size = 16
+        self.number_of_point = 2048
+
+    def after_pred(self,preds,batch):
+        preds = preds[0]
+        out_batch = torch.zeros(self.batch_size,self.num_classes,self.number_of_point )
+        out = preds.squeeze(0).T
+   
+        for b in range(args.batch_size):
+            out_batch[b,:,:] = out[batch == b].T
+        preds = out_batch
+        preds = preds.to(self.device)
+        return preds
+
+    def pre_pointcnn(self,points):
+        self.batch_size = points.shape[0]
+        self.number_of_point = points.shape[2]
+
+        batch_zero = torch.zeros(points[0].shape[0],dtype=torch.int64)
+        batch = torch.zeros(points[0].shape[0],dtype=torch.int64)
+        point_for_pointcnn = points[0]
+        for b in range(1,points.shape[0]):
+                        batch = torch.cat((batch,batch_zero + b),dim=0)
+                        point_for_pointcnn = torch.cat((point_for_pointcnn,points[b]),dim=0)
+        points = point_for_pointcnn
+        return points,batch
         
-    def forward(self, pos0, batch0):
+    def forward(self,points):
+        pos0,batch0 = self.pre_pointcnn(points)
         
         pos1,batch1 = pos0, batch0
         x1 = F.relu(self.conv1(None, pos1, batch1))
@@ -114,5 +142,7 @@ class POINTCNN_SEG(torch.nn.Module):
         X_OUT = self.DROP(X_OUT)
         X_OUT = self.fc_lyaer2(X_OUT)
 
+        X_OUT = self.after_pred(X_OUT,self.batch_size)
 
-        return X_OUT.squeeze(0)
+
+        return X_OUT
