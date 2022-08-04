@@ -88,7 +88,7 @@ class POINTCNN_SEG(torch.nn.Module):
         xo4 = F.relu(self.conv_up4(x4, pos4, batch4))
         print("XO4:",xo4.shape)
 
-        xo4_concat = torch.cat((xo4,x4),1)
+        xo4_concat = xo4 + x4
         print("XO4_CONCAT:",xo4_concat.shape)
         xo4_after_mlp = self.mlp_out4(xo4_concat)
         print("XO4_CONCAT:",xo4_concat.shape)
