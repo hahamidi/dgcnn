@@ -107,7 +107,7 @@ class Trainer():
                     self.optimizer.zero_grad()
                     batch = batch.to(self.device)
                     preds = self.model(points,batch)
-                    print(preds[0])
+                    print(preds[0:1000])
                     print(preds.shape)
                     preds = self.after_pred(preds,batch)
                     print(preds.shape)
