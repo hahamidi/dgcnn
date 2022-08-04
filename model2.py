@@ -112,7 +112,7 @@ class POINTCNN_SEG(torch.nn.Module):
         print("Xo1_in:",Xo1_in.shape)
         xo1 = F.relu(self.conv_up1(Xo1_in, pos1, batch1))
 
-        xo1_concat = (xo1 + x1).T
+        xo1_concat = (xo1 + x1)
         xo1_after_mlp = self.mlp_out1(xo1_concat)
 
         X_OUT = self.fc_lyaer(xo1_after_mlp)
