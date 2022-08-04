@@ -66,16 +66,7 @@ class Trainer():
                         point_for_pointcnn = torch.cat((point_for_pointcnn,points[b]),dim=0)
         points = point_for_pointcnn
         return points,batch
-    def after_pred(self,preds,batch):
-        # preds = preds[0]
-        out_batch = torch.zeros(args.batch_size,self.number_of_classes,args.num_points )
-        out = preds.squeeze(0).T
-   
-        for b in range(args.batch_size):
-            out_batch[b,:,:] = out[batch == b].T
-        preds = out_batch
-        preds = preds.to(self.device)
-        return preds
+
 
         # self.loss = CrossEntropyLoss()
     def get_n_params(self):
@@ -108,16 +99,16 @@ class Trainer():
                     # all batch item concate together
 
 
-                    points,batch = self.pre_pointcnn(points)
+                    # points,batch = self.pre_pointcnn(points)
                     if points.shape[0] <= 1:
                         continue
                     self.optimizer.zero_grad()
                     batch = batch.to(self.device)
-                    preds = self.model(points,batch)
+                    preds = self.model(points)
                     # print(preds[0:1000])
                     # print(preds.shape)
                     print(preds)
-                    preds = self.after_pred(preds,batch)
+                    # preds = self.after_pred(preds,batch)
                     # print(preds)
                     # print(preds.shape)
                     # self.get_n_params()
