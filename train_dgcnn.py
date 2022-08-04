@@ -1,6 +1,7 @@
 
 import argparse
 import os
+from turtle import pen
 
 import torch
 import torch.optim as optim
@@ -95,9 +96,11 @@ class Trainer():
                     # identity = torch.eye(feature_transform.shape[-1]).to(self.device)
                     # regularization_loss = torch.norm(
                     #     identity - torch.bmm(feature_transform, feature_transform.transpose(2, 1))
-                    # )
+                    # ) 
                     # print(preds,targets)
                     # print(preds.shape,targets.shape)
+                    print(preds.shape)
+                    print(targets.shape)
                     loss =  self.loss_function(preds, targets)  # * regularization_loss
                     # print(loss.item())
                     epoch_train_loss.append(loss.cpu().item())
