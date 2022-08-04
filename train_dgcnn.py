@@ -25,7 +25,7 @@ from model import DGCNN_partseg
 from torch.optim.lr_scheduler import CosineAnnealingLR, StepLR
 from contrastive_loss import Contrast_loss_point_cloud,Contrast_loss_point_cloud_inetra_batch
 from data import ShapeNetPart
-from data import S3DIS
+# from data import S3DIS
 # from pointNetP import PointNet2SemSegSSG
 dire = os.getcwd().split('/')
 dire = '/'.join(dire)
