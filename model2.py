@@ -87,7 +87,7 @@ class POINTCNN_SEG(torch.nn.Module):
         print(points)
         print(points.shape)
         self.batch_size = points.shape[0]
-        self.number_of_point = points.shape[2]
+        self.number_of_point = points.shape[1]
 
         batch_zero = torch.zeros(points[0].shape[0],dtype=torch.int64)
         batch = torch.zeros(points[0].shape[0],dtype=torch.int64)
