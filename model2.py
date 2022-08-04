@@ -67,14 +67,14 @@ class POINTCNN_SEG(torch.nn.Module):
             nn.Conv1d(128, self.num_classes, kernel_size=1),
             )
         
-    def forward(self, pos, batch):
-        print(pos.shape)
-        pos1,batch1 = pos, batch
+    def forward(self, pos0, batch0):
+        print(pos0.shape)
+        pos1,batch1 = pos0, batch0
         x1 = F.relu(self.conv1(None, pos1, batch1))
         
 
         x2, pos2, batch2 = self.down_sampler(x1, pos1, batch1)
-        x2 = F.relu(self.conv2(x2, pos1, batch1))
+        x2 = F.relu(self.conv2(x2, pos2, batch2))
 
         print(x2.shape)
         x3, pos3, batch3 = self.down_sampler(x2, pos2, batch2)
