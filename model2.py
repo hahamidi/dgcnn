@@ -1,4 +1,5 @@
 import argparse
+from audioop import bias
 
 import torch
 import torch.nn as nn
@@ -59,12 +60,13 @@ class POINTCNN_SEG(torch.nn.Module):
 
         self.down_sampler = down_sample_layer
 
-
-        self.fc_lyaer1 = nn.Conv1d(256, 128, kernel_size=1)
-        self.BN = nn.BatchNorm1d(128)
-        self.Drop = nn.Dropout(0.5)
-        self.fc_lyaer2 = nn.Conv1d(128, self.num_classes, kernel_size=1)
-
+        self.fc_lyaer = nn.Sequential(
+            nn.Conv1d(256, 128, kernel_size=1,bias = False),
+            nn.BatchNorm1d(128),
+            nn.ReLU(True),
+            nn.Dropout(0.5),
+            nn.Conv1d(128, self.num_classes, kernel_size=1),
+            )
         
     def forward(self, pos0, batch0):
         
@@ -114,15 +116,8 @@ class POINTCNN_SEG(torch.nn.Module):
         xo1_concat = (xo1 + x1).T
         print("XO1_CONCAT:",xo1_concat.shape)
         xo1_after_mlp = self.mlp_out1(xo1_concat)
-        print("XO1_mlp:",xo1_after_mlp.shape)
+        print("XO1_CONCAT:",xo1_after_mlp.shape)
 
-        X_OUT = self.fc_lyaer1(xo1_after_mlp)
-        print("X_OUT:",X_OUT.shape)
-        X_OUT = self.BN(X_OUT)
-        print("X_OUT:",X_OUT.shape)
-        X_OUT = self.Drop(X_OUT)
-        print("X_OUT:",X_OUT.shape)
-        X_OUT = self.fc_lyaer2(X_OUT)
-
+        X_OUT = self.fc_lyaer(xo1_after_mlp)
         print("X_OUT:",X_OUT.shape)
         return X_OUT.squeeze(0)
