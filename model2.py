@@ -73,7 +73,8 @@ class POINTCNN_SEG(torch.nn.Module):
         self.number_of_point = 2048
 
     def after_pred(self,preds,batch):
-        preds = preds[0]
+        print(preds.shape)
+        # preds = preds[0]
         out_batch = torch.zeros(self.batch_size,self.num_classes,self.number_of_point )
         out = preds.squeeze(0).T
    
@@ -98,6 +99,9 @@ class POINTCNN_SEG(torch.nn.Module):
         points = point_for_pointcnn
         points = points.to(self.device)
         batch = batch.to(self.device)
+        print(points.shape)
+        print(batch.shape)
+        
         return points,batch
         
     def forward(self,points):
