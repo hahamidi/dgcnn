@@ -40,6 +40,8 @@ class POINTCNN_SEG(torch.nn.Module):
 
 
         self.num_classes = num_classes
+        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 
         self.conv1 = XConv(0, 256, dim=3, kernel_size=8,dilation = 1, hidden_channels= 128)
         self.conv2 = XConv(256, 512, dim=3, kernel_size=12, hidden_channels=384,dilation=2)
@@ -92,6 +94,8 @@ class POINTCNN_SEG(torch.nn.Module):
                         batch = torch.cat((batch,batch_zero + b),dim=0)
                         point_for_pointcnn = torch.cat((point_for_pointcnn,points[b]),dim=0)
         points = point_for_pointcnn
+        points = points.to(self.device)
+        batch = batch.to(self.device)
         return points,batch
         
     def forward(self,points):
