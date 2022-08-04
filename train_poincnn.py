@@ -114,12 +114,12 @@ class Trainer():
                     self.optimizer.zero_grad()
                     batch = batch.to(self.device)
                     preds = self.model(points,batch)
-                    print(preds[0:1000])
-                    print(preds.shape)
+                    # print(preds[0:1000])
+                    # print(preds.shape)
                     preds = self.after_pred(preds,batch)
-                    print(preds)
-                    print(preds.shape)
-                    self.get_n_params()
+                    # print(preds)
+                    # print(preds.shape)
+                    # self.get_n_params()
              
 
                     # if idx == 0:
@@ -135,6 +135,7 @@ class Trainer():
                     # print(preds.shape,targets.shape)
                     loss =  self.loss_function(preds, targets)  # * regularization_loss
                     print(loss.item())
+                    print(targets)
                     # print(loss.item())
                     epoch_train_loss.append(loss.cpu().item())
                     loss.backward()
