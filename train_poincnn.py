@@ -175,14 +175,14 @@ class Trainer():
                         # points = points.permute(0, 2, 1)
                         
 
-                        points,batch = self.pre_pointcnn(points)
+                        # points,batch = self.pre_pointcnn(points)
                         batch = batch.to(self.device)
                         if points.shape[0] <= 1:
                             continue
                         # self.optimizer.zero_grad()
                         with torch.no_grad():                        
                                 preds = self.model(points,batch)
-                                preds = self.after_pred(preds,batch)
+                                # preds = self.after_pred(preds,batch)
                                 # preds = preds.view(-1, self.number_of_classes)
                                 # targets = targets.view(-1)
 
