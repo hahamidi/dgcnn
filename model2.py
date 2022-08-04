@@ -84,6 +84,8 @@ class POINTCNN_SEG(torch.nn.Module):
         return preds
 
     def pre_pointcnn(self,points):
+        print(points)
+        print(points.shape)
         self.batch_size = points.shape[0]
         self.number_of_point = points.shape[2]
 
