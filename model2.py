@@ -102,7 +102,7 @@ class POINTCNN_SEG(torch.nn.Module):
         points = points.to(self.device)
         batch = batch.to(self.device)
         print(points.shape)
-        print(batch.shape)
+        print(batch)
         
         return points,batch
         
@@ -154,7 +154,7 @@ class POINTCNN_SEG(torch.nn.Module):
         X_OUT = self.DROP(X_OUT)
         X_OUT = self.fc_lyaer2(X_OUT)
 
-        X_OUT = self.after_pred(X_OUT,self.batch_size)
+        X_OUT = self.after_pred(X_OUT,batch=batch0)
 
 
         return X_OUT
