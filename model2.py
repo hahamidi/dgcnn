@@ -118,5 +118,5 @@ class POINTCNN_SEG(torch.nn.Module):
         print("XO1_CONCAT:",xo1_after_mlp.shape)
 
         X_OUT = self.fc_lyaer(xo1_after_mlp)
-
+        print("X_OUT:",X_OUT.shape)
         return X_OUT.squeeze(0)
