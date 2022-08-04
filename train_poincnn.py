@@ -110,6 +110,7 @@ class Trainer():
                     print(preds[0:1000])
                     print(preds.shape)
                     preds = self.after_pred(preds,batch)
+                    print(preds)
                     print(preds.shape)
              
 
