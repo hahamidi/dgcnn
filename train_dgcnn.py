@@ -58,7 +58,15 @@ class Trainer():
         self.blue= lambda x: '\033[94m' + x + '\033[0m'
         self.red = lambda x: '\033[91m' + x + '\033[0m'
 
+    def get_n_params(self):
+        pp=0
+        for p in list(self.model.parameters()):
+            print(p)
+            break
+   
 
+        # return pp
+    #    print(get_n_params(model))
 
         # self.loss = CrossEntropyLoss()
     def train_one_epoch(self,epoch_num):
@@ -87,6 +95,9 @@ class Trainer():
                     self.optimizer.zero_grad()
                     
                     preds = self.model(points)
+                    self.get_n_params()
+
+
 
                     # if idx == 0:
                     #     self.show_embedding_sklearn((preds).cpu().detach().numpy(),targets.cpu().detach().numpy(),title = "train"+str(epoch_num))
