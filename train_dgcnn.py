@@ -24,6 +24,7 @@ from model import DGCNN_partseg
 from torch.optim.lr_scheduler import CosineAnnealingLR, StepLR
 from contrastive_loss import Contrast_loss_point_cloud,Contrast_loss_point_cloud_inetra_batch
 from data import ShapeNetPart
+from data import S3DIS
 # from pointNetP import PointNet2SemSegSSG
 dire = os.getcwd().split('/')
 dire = '/'.join(dire)
@@ -85,7 +86,7 @@ class Trainer():
                     self.optimizer.zero_grad()
                     
                     preds = self.model(points)
-                    print(preds.shape)
+
                     # if idx == 0:
                     #     self.show_embedding_sklearn((preds).cpu().detach().numpy(),targets.cpu().detach().numpy(),title = "train"+str(epoch_num))
                     # preds = preds.view(-1, self.number_of_classes)
@@ -286,14 +287,15 @@ if __name__ == '__main__':
     DATASETS = {
                 'shapenet': ShapeNetDataset,
             }
-    train_dataset = ShapeNetDataset()
-    train_dataset = ShapeNetPart(partition='trainval', num_points=args.num_points, class_choice=args.class_choice)
+    # train_dataset = ShapeNetDataset()
+    # train_dataset = ShapeNetPart(partition='trainval', num_points=args.num_points, class_choice=args.class_choice)
+    train_dataset  = S3DIS(num_points= args.num_points)
     train_dataloader = torch.utils.data.DataLoader(train_dataset,
                                                         batch_size=args.batch_size,
                                                         shuffle=True,
                                                         num_workers=args.number_of_workers)
-    test_dataset = ShapeNetDataset()
-    test_dataset = ShapeNetPart(partition='test', num_points=args.num_points, class_choice=args.class_choice)
+    # test_dataset = ShapeNetDataset()
+    # test_dataset = ShapeNetPart(partition='test', num_points=args.num_points, class_choice=args.class_choice)
     test_dataloader = torch.utils.data.DataLoader(test_dataset,
                                                         batch_size=args.batch_size,
                                                         shuffle=True,

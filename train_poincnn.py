@@ -20,7 +20,7 @@ from sklearn.manifold import TSNE as sklearnTSNE
 import matplotlib.pyplot as plt
 import random
 from pylab import cm
-from point_cnn import Net
+from model2 import POINTCNN_SEG as Net
 from torch.optim.lr_scheduler import CosineAnnealingLR, StepLR
 from contrastive_loss import Contrast_loss_point_cloud,Contrast_loss_point_cloud_inetra_batch
 from data import ShapeNetPart
