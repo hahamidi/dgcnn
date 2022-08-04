@@ -107,8 +107,9 @@ class Trainer():
                     self.optimizer.zero_grad()
                     batch = batch.to(self.device)
                     preds = self.model(points,batch)
-                    preds = self.after_pred(preds,batch)
                     print(preds)
+                    preds = self.after_pred(preds,batch)
+                    print(preds.shape)
              
 
                     # if idx == 0:
