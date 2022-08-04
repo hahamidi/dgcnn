@@ -119,7 +119,7 @@ class POINTCNN_SEG(torch.nn.Module):
         X_OUT = torch.unsqueeze(xo1_after_mlp.T, 0)
         X_OUT = self.fc_lyaer1(xo1_after_mlp)
         print("X_OUT:",X_OUT.shape)
-        X_OUT = self.BN(X_OUT)
+
         print("X_OUT:",X_OUT.shape)
         X_OUT = self.DROP(X_OUT)
         print("X_OUT:",X_OUT.shape)
