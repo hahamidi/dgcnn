@@ -71,59 +71,47 @@ class POINTCNN_SEG(torch.nn.Module):
         
         pos1,batch1 = pos0, batch0
         x1 = F.relu(self.conv1(None, pos1, batch1))
-        print("X1:",x1.shape)
 
         x2, pos2, batch2 = self.down_sampler(x1, pos1, batch1)
         x2 = F.relu(self.conv2(x2, pos2, batch2))
-        print("X2:",x2.shape)
 
         x3, pos3, batch3 = self.down_sampler(x2, pos2, batch2)
         x3 = F.relu(self.conv3(x3, pos3, batch3))
-        print("X3:",x3.shape)
 
         x4, pos4, batch4 = self.down_sampler(x3, pos3, batch3)
         x4 = F.relu(self.conv4(x4, pos4, batch4))
-        print("X4:",x4.shape)
 
         xo4 = F.relu(self.conv_up4(x4, pos4, batch4))
-        print("XO4:",xo4.shape)
 
         xo4_concat = (xo4 + x4).T
-        print("XO4_CONCAT:",xo4_concat.shape)
         xo4_after_mlp = self.mlp_out4(xo4_concat).T
-        print("XO4_CONCAT:",xo4_concat.shape)
         Xo3_in = knn_interpolate(x = xo4_after_mlp, pos_x=pos4 , batch_x=batch4 , k=3 ,pos_y=pos3,batch_y=batch3)
-        print("Xo3_in:",Xo3_in.shape)
         xo3 = F.relu(self.conv_up3(Xo3_in, pos3, batch3))
-        print("XO3:",xo3.shape)
         xo3_concat = (xo3 + x3).T
         xo3_after_mlp = self.mlp_out3(xo3_concat).T
         Xo2_in = knn_interpolate(x = xo3_after_mlp, pos_x=pos3 , batch_x=batch3 , k=3 ,pos_y=pos2,batch_y=batch2)
-        print("Xo2_in:",Xo2_in.shape)
+
 
         xo2 = F.relu(self.conv_up2(Xo2_in, pos2, batch2))
-        print("XO2:",xo2.shape)
+
 
         xo2_concat = (xo2 + x2).T
-        print("XO2_CONCAT:",xo2_concat.shape)
+
         xo2_after_mlp = self.mlp_out2(xo2_concat).T
-        print("XO2_CONCAT:",xo2_concat.shape)
+
         Xo1_in = knn_interpolate(x = xo2_after_mlp, pos_x=pos2 , batch_x=batch2 , k=3 ,pos_y=pos1,batch_y=batch1)
-        print("Xo1_in:",Xo1_in.shape)
+
         xo1 = F.relu(self.conv_up1(Xo1_in, pos1, batch1))
-        print("XO1:",xo1.shape)
+
         xo1_concat = (xo1 + x1).T
-        print("XO1_CONCAT:",xo1_concat.shape)
+
         xo1_after_mlp = self.mlp_out1(xo1_concat)
-        print("XO1_CONCAT:",xo1_after_mlp.shape)
+
         X_OUT = torch.unsqueeze(xo1_after_mlp.T, 0)
         X_OUT = self.fc_lyaer1(xo1_after_mlp)
-        print("X_OUT:",X_OUT.shape)
-
-        print("X_OUT:",X_OUT.shape)
+        X_OUT = self.BN(X_OUT)
         X_OUT = self.DROP(X_OUT)
-        print("X_OUT:",X_OUT.shape)
         X_OUT = self.fc_lyaer2(X_OUT)
-        print("X_OUT:",X_OUT.shape)
+
 
         return X_OUT.squeeze(0)
